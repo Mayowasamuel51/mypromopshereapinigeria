@@ -1,9 +1,10 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\User;
+
 return new class extends Migration
 {
     /**
@@ -11,10 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items_adsvidoes', function (Blueprint $table) {
+        Schema::create('itemfree_ads', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->string("titlevideourl")->nullable();
+            $table->integer("freetimes") ->default('0')->nullable();
+            $table->string("titleImageurl")->nullable();
             $table->integer("price_range")->nullable();
             $table->string("usedOrnew")->nullable();
             $table->string("productName")->nullable();
@@ -34,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items_adsvidoes');
+        Schema::dropIfExists('itemfree_ads');
     }
 };

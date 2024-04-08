@@ -4,6 +4,8 @@ use App\Models\ItemsAds;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\ItemfreeAds;
+
 
 return new class extends Migration
 {
@@ -15,6 +17,8 @@ return new class extends Migration
         Schema::create('ads_images', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(ItemsAds::class);
+            $table->foreignIdFor(ItemfreeAds::class);
+        
             $table->string('itemadsimages');
             $table->timestamps();
         });

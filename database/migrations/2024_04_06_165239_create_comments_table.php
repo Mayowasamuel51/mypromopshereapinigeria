@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\AdsServiceProvider;
+use App\Models\ItemfreeAds;
+use App\Models\ItemfreeVideosAds;
 use App\Models\ItemsAds;
 use App\Models\ItemsAdsvidoes;
 use Illuminate\Database\Migrations\Migration;
@@ -19,6 +21,8 @@ return new class extends Migration
             $table->foreignIdFor(ItemsAds::class);
             $table->foreignIdFor(ItemsAdsvidoes::class);
             $table->foreignIdFor(AdsServiceProvider::class);
+            $table->foreignIdFor(ItemfreeAds::class);
+            $table->foreignIdFor(ItemfreeVideosAds::class);
             $table->string('comment');
             $table->timestamps();
         });

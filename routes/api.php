@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ItemfreeAdsController;
+use App\Http\Controllers\API\ItemfreeVideosAdsController;
 use App\Http\Controllers\API\ItemsAdsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
 
 
 
@@ -12,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Ads Routes
+    Route::post('/freeads',[ItemfreeAdsController::class, 'freeLimitedAds']);
+    Route::post('/vidoesfreeads',[ItemfreeVideosAdsController::class, 'freeLimitedAds']);
     Route::post('/normalads', [ItemsAdsController::class, 'ItemsAdsStore']);
 });
 

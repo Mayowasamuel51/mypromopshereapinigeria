@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('name');
+            $table->integer("freetimes") ->default('0')->nullable();
+            $table->string('date_buy_count')->integer();
             $table->string('id_number');
-            $table->integer('current_plan')->nullable();
+            $table->string('current_plan') ->default('freeplan')->nullable();
             $table->string('country')->nullable();
             $table->string('location')->nullable();
             $table->string('websiteName')->nullable();

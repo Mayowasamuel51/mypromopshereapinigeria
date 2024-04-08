@@ -4,7 +4,7 @@ use App\Models\ItemsAdsvidoes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\ItemfreeVideosAds;
 return new class extends Migration
 {
     /**
@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(ItemsAdsvidoes::class);
             $table->string('itemadsvideos');
+            $table->foreignIdFor(ItemfreeVideosAds::class);
             $table->timestamps();
         });
     }

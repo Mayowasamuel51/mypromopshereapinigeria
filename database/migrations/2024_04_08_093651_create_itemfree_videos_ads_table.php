@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items_adsvidoes', function (Blueprint $table) {
+        Schema::create('itemfree_videos_ads', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
             $table->string("titlevideourl")->nullable();
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items_adsvidoes');
+        Schema::dropIfExists('itemfree_videos_ads');
     }
 };
