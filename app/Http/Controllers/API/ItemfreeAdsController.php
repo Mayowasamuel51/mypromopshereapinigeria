@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdsImages;
 use App\Models\ItemfreeAds;
 use App\Models\ItemsAds;
 use App\Models\User;
@@ -12,7 +13,35 @@ use Illuminate\Support\Facades\DB;
 class ItemfreeAdsController extends Controller
 {
     //
-    public function freeLimitedAds(Request $request)
+    public function  addimages(Request $request, $id)
+    {
+        $request->validate([
+            'itemadsimagesurls' => 'required'
+            // image'
+        ]);
+        $item = ItemfreeAds::find($id);
+
+        $loaditem = $item->adsimages()->create([
+            'itemadsimagesurls' => $request->itemadsimagesurls
+        ]);
+        if (auth('sanctum')->check()) {
+            if ($loaditem) {
+                return response()->json([
+                    'message' => $loaditem
+                    // 'info'=>ItemfreeAds::find($id)
+                ]);
+            }
+            return response()->json([
+                'status' => 500
+                // 'info'=>ItemfreeAds::find($id)
+            ]);
+        }
+        return response()->json([
+            'status' => 401,
+            'message' => 'You are not unauthenticated Procced to login or register '
+        ]);
+    }
+    public function freeLimitedAds(Request $request, ItemfreeAds  $itemfreeAds)
     {
         // the freelimited ad will only allow 15  per new account to post noramls ads and video ads 
         // we need to count the times it was used 
@@ -20,55 +49,93 @@ class ItemfreeAdsController extends Controller
         $request->validate([
             'categories' => 'required',
             'description' => 'required',
-            'price_range' => 'required|integer',
-            'state' => 'required',
-            'local_gov' => 'required',
+            // 'price_range' => 'required|integer',
+            // 'state' => 'required',
+            // 'local_gov' => 'required',
             'headlines' => 'required',
-            'titleImageurl' => 'required'
+            // 'titleImageurl' => 'required'
         ]);
 
         // check if free times is more than 20 times 
         // check the current time stage ( meaning how many left)
 
         if (auth('sanctum')->check()) {
-
-
             if (auth()->user()->current_plan  === 'freeplan') {
-
-                if (auth()->user()->freetimes >= 5) {
+                if (auth()->user()->freetimes >= 30) {
                     return response()->json([
                         'status' => 500,
                         'message' => 'sorry you cant post again , please upgrade to paid plan '
                     ]);
                 }
+                // $items  = ItemfreeAds::create([
+                //     "user_id" => auth()->user()->id,
+                //     'categories' => $request->categories,
+                //     'description' => $request->description,
+                //     'price_range' => $request->price,
+                //     'state' => $request->state,
+                //     'local_gov' => $request->local_gov,
+                //     'headlines' => $request->headlines,
+                //     'itemadsid' => rand(999297, 45543),
+                //     'usedOrnew' => $request->usedOrnew,
+                //     'titleImageurl' => $request->titleImageurl,
+                //     // 'freetimes'=>$value
+                // ]);
+                $items  = new  ItemfreeAds;
+                $items->user_id = auth()->user()->id;
+                $items->categories = $request->categories;
+                $items->description = $request->description;
+                $items->price_range = $request->price;
+                $items->state = $request->state;
+                $items->local_gov = $request->local_gov;
+                $items->headlines = $request->headlines;
+                $items->itemadsid = rand(999297, 45543);
+                $items->usedOrnew = $request->usedOrnew;
+                $items->titleImageurl = $request->titleImageurl;
 
-                $value = 1;
-                $items  = ItemfreeAds::create([
-                    "user_id" => auth()->user()->id,
-                    'categories' => $request->categories,
-                    'description' => $request->description,
-                    'price_range' => $request->price,
-                    'state' => $request->state,
-                    'local_gov' => $request->local_gov,
-                    'headlines' => $request->headlines,
-                    'itemadsid' => rand(999297, 45543),
-                    'usedOrnew' => $request->usedOrnew,
-                    'titleImageurl' => $request->titleImageurl,
-                    // 'freetimes'=>$value
-                ]);
+                $items->save();
+                // 'freetimes'=>$value
+                /// load  mutiple images into Ads images  .... try and add timer , like await 
+                // $adsimages = AdsImages::create([
+                //     'itemfree_ads_id' => $items->id,
+                //     'itemadsimagesurls' => $request->itemadsimagesurls
+                // ]);
+                // $post = AdsImages::find(1);
+                // $comment = $post->itemfreeads()->create([
+                //     'itemadsimagesurls' => 'A new comment.',
+                // ]);
+                // $comment = new AdsImages;
+                // $comment->itemadsimagesurls =  $request->itemadsimagesurls;
+                // $comment->itemfree_ads_id =  $items->id;`
+                // $items->adsimages()->save($comment);
+                // $post->adsimages()->save($comment);
+                // $new_item = new ItemfreeAds::find(1);
                 // $user_update_free_times = new User;
                 // $user_update_free_times->freetimes = $value;
                 // $user_update_free_times->update();
+                // $item_post = ItemfreeAds::find(1);
+                // $loaditem = $item_post->adsimages()->create([
+                //     'itemadsimagesurls' => $request->itemadsimagesurls
+                // ]);
+                if (
+                    $items
+                    // &&
+                    // $post
+                    // $comment
+                ) {
 
-                if ($items) {
-                    if (auth()) {   
+                    if (auth()) {
                         $affected = DB::table('users')->increment('freetimes');
                         //  DB::table('users')
                         //     ->where('id', auth()->user()->id)
                         //     ->update(['freetimes' => $value]);
+                        // $comment = new AdsImages(['itemadsimagesurls' => $request->itemadsimagesurls]);
+                        // $post =  ItemfreeAds::find($items->id);
+                        // $post->adsimages()->save($comment);
                         return response()->json([
                             'status' => 201,
-                            'check' =>  $affected ,
+                            // 'test' => $loaditem,
+                            'item' => $items->id,
+                            'check' =>  $affected,
                             'message' => 'items ads created'
                         ]);
                     }
@@ -85,7 +152,7 @@ class ItemfreeAdsController extends Controller
         }
         return response()->json([
             'status' => 401,
-            'message' => 'not allowed  '
+            'message' => 'You are not unauthenticated Procced to login or register '
         ]);
     }
 }

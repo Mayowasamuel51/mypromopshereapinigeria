@@ -33,7 +33,7 @@ class AuthController extends Controller
             $createuser  =  User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'current_plan=>"free_plan", 
+                'current_plan'=>"free_plan", 
                 'id_number'=> rand(1222,45543),
                 'password' => Hash::make('password', [$request->password] )
             ]);

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(ItemsAds::class);
             $table->foreignIdFor(ItemfreeAds::class);
         
-            $table->string('itemadsimages');
+            $table->string('itemadsimagesurls');
             $table->timestamps();
         });
     }

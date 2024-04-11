@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('name');
             $table->integer("freetimes") ->default('0')->nullable();
-            $table->string('date_buy_count')->integer();
+            $table->string('date_buy_count')->integer()->nullable();
             $table->string('id_number');
             $table->string('current_plan') ->default('freeplan')->nullable();
             $table->string('country')->nullable();
