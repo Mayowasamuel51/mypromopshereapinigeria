@@ -16,6 +16,28 @@ class AuthController extends Controller
         $this->middleware('auth:sanctum')
         ->except(['sighup','login']);
     }
+    public function  getInfo(){
+        // get user info base on token to show for 
+        $user = Auth::user();
+        if(!$user){
+            return response()->json([
+                'status' => 401,
+                'message' => 'You are not unauthenticated Procced to login or register '
+            ]);
+        }
+        $info = User::where('id',$user->id)->first();
+        if(!$info){
+            return response()->json([
+                'status' => 401,
+                'message' => 'You are not unauthenticated Procced to login or register '
+            ]);
+        }
+        return response()->json([
+            'status' => 20,
+            'message' => $info
+        ]);
+
+    }
     public function sighup(Request $request)
     {
 

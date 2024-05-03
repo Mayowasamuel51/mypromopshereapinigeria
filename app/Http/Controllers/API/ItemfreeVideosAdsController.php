@@ -13,36 +13,29 @@ use Illuminate\Support\Facades\DB;
 class ItemfreeVideosAdsController extends Controller
 {
     //
-    public function freeLimitedAds(Request $request)
-    {
+    public function freeLimitedAds(Request $request)  {
         // the freelimited ad will only allow 15  per new account to post noramls ads and video ads 
         // we need to count the times it was used 
         // every post == 1 eliter noraml post or videos post 
         $request->validate([
             'categories' => 'required',
-            'description' => 'required',
-            'price_range' => 'required|integer',
-            'state' => 'required',
-            'local_gov' => 'required',
-            'headlines' => 'required',
-            // 'titleImageurl' => 'required'
+            // 'description' => 'required',
+            // 'price_range' => 'required|integer',
+            // 'state' => 'required',
+            // 'local_gov' => 'required',
+            // 'headlines' => 'required',
+            'titlevideourl' => 'required'
         ]);
-
         // check if free times is more than 20 times 
         // check the current time stage ( meaning how many left)
-
         if (auth('sanctum')->check()) {
-
-
             if (auth()->user()->current_plan  === 'freeplan') {
-
-                if (auth()->user()->freetimes >= 5) {
+                if (auth()->user()->freetimes >= 5100) {
                     return response()->json([
                         'status' => 500,
                         'message' => 'sorry you cant post again , please upgrade to paid plan '
                     ]);
                 }
-
                 $value = 1;
                 $items  = ItemfreeVideosAds::create([
                     "user_id" => auth()->user()->id,
@@ -60,16 +53,15 @@ class ItemfreeVideosAdsController extends Controller
                 // $user_update_free_times = new User;
                 // $user_update_free_times->freetimes = $value;
                 // $user_update_free_times->update();
-
                 if ($items) {
-                    if (auth()) {   
+                    if (auth()) {
                         $affected = DB::table('users')->increment('freetimes');
                         //  DB::table('users')
                         //     ->where('id', auth()->user()->id)
                         //     ->update(['freetimes' => $value]);
                         return response()->json([
                             'status' => 201,
-                            'check' =>  $affected ,
+                            'check' =>  $affected,
                             'message' => 'items ads created'
                         ]);
                     }

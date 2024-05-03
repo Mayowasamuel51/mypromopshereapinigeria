@@ -41,17 +41,16 @@ class ItemfreeAdsController extends Controller
             'message' => 'You are not unauthenticated Procced to login or register '
         ]);
     }
-    public function freeLimitedAds(Request $request, ItemfreeAds  $itemfreeAds)
-    {
+    public function freeLimitedAds(Request $request, ItemfreeAds  $itemfreeAds){
         // the freelimited ad will only allow 15  per new account to post noramls ads and video ads 
         // we need to count the times it was used 
         // every post == 1 eliter noraml post or videos post 
         $request->validate([
             'categories' => 'required',
             'description' => 'required',
-            // 'price_range' => 'required|integer',
-            // 'state' => 'required',
-            // 'local_gov' => 'required',
+            // // 'price_range' => 'required|integer',
+            // // 'state' => 'required',
+            // // 'local_gov' => 'required',
             'headlines' => 'required',
             // 'titleImageurl' => 'required'
         ]);
@@ -61,7 +60,7 @@ class ItemfreeAdsController extends Controller
 
         if (auth('sanctum')->check()) {
             if (auth()->user()->current_plan  === 'freeplan') {
-                if (auth()->user()->freetimes >= 30) {
+                if (auth()->user()->freetimes >= 5100) {
                     return response()->json([
                         'status' => 500,
                         'message' => 'sorry you cant post again , please upgrade to paid plan '
