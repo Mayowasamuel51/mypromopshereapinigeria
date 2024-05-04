@@ -24,12 +24,37 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // 2) Categiories Api  
 Route::get('/categoriesapi', [HomePageController::class, 'categoriesapi']);
-Route::get('/categoriesapi/{categoriesapi}/{state}/{local_gov}', [HomePageController::class, 'categoriesapiSinglePages']);
+Route::get(
+    '/categoriesapi/{categoriesapi}/{state}/{local_gov}',
+    [HomePageController::class, 'categoriesapiSinglePages']
+);
 // 3) Personlized Ads Api 
 
-// 4) Trending Ads Api 
-
+// 4)General  Trending Ads Api 
+Route::get('/trendingads', [HomePageController::class, 'generalTrending']);
 // 6) Top  Services Api 
+
+// Trending Ads api with Headlines  ( method is hard coded  on the frist time user goes to the site   )
+/// 1 ) headlinesApartment
+Route::get('/apartment/{state}', [HomePageController::class, 'headlinesApartment']);
+
+// 2) headlinesPhones, Tablets
+Route::get('/phones/{state}', [HomePageController::class, 'headlinephones']);
+
+//  3) headlines for Baby products 
+
+
+// 4) headlines for Fashions 
+
+
+/// 5 ) headlines for Cars
+Route::get('/cars/{state}', [HomePageController::class, 'headlinecars']);
+
+
+/// 6 ) headlines for Grocerys 
+
+
+// 7 ) headlines for Health and Beauty 
 
 
 

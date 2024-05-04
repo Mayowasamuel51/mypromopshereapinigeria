@@ -41,7 +41,8 @@ class ItemfreeAdsController extends Controller
             'message' => 'You are not unauthenticated Procced to login or register '
         ]);
     }
-    public function freeLimitedAds(Request $request, ItemfreeAds  $itemfreeAds){
+    public function freeLimitedAds(Request $request, ItemfreeAds  $itemfreeAds)
+    {
         // the freelimited ad will only allow 15  per new account to post noramls ads and video ads 
         // we need to count the times it was used 
         // every post == 1 eliter noraml post or videos post 

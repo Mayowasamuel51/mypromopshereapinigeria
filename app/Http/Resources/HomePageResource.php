@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class HomePageControllerResource extends JsonResource
+class HomePageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,9 +18,8 @@ class HomePageControllerResource extends JsonResource
         return [
             'id'=>$this->id,
             'user_id'=>$this->user_id ,
-            'titleImageurl'=>$this->titleImageurl,
-            'categories'=>$this->categories
-            // 'titlevideourl'=>$this->titlevideourl
+            // 'titleImageurl'=>$this->titleImageurl,
+            'titlevideourl'=>$this->titlevideourl
         ];
     }
 }
