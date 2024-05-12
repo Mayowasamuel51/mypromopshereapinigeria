@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('itemfree_videos_ads', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
+            $table->string("user_image")->nullable();
             $table->string("titlevideourl")->nullable();
             $table->integer("price_range")->nullable();
             $table->string("usedOrnew")->nullable();

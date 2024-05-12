@@ -19,6 +19,7 @@ class HomePageControllerResource extends JsonResource
             'id'=>$this->id,
             'user_id'=>$this->user_id ,
             'titleImageurl'=>$this->titleImageurl,
+            'user_image'=>$this->user_image,
             'categories'=>$this->categories
             // 'titlevideourl'=>$this->titlevideourl
         ];

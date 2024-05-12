@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('itemfree_ads', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
+            $table->string("user_image")->nullable();
             $table->integer("freetimes") ->default('0')->nullable();
             $table->string("titleImageurl")->nullable();
             $table->integer("price_range")->nullable();

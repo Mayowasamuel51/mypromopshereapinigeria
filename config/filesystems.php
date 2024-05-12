@@ -35,6 +35,11 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+        'titleImages' => [
+            'driver' => 'local', // Adjust the driver if needed (e.g., 's3' for Amazon S3)
+            'root' => public_path('storage/titleImages'), // Adjust the root path if needed
+            'visibility' => 'public', // Adjust visibility if needed (e.g., 'private')
+        ],
 
         'public' => [
             'driver' => 'local',
@@ -71,6 +76,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('images') => storage_path('app/public/uploads'),
     ],
 
 ];

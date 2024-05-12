@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HomePageControllerResource;
 use App\Http\Resources\HomePageResource;
+use App\Models\AdsImages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\categories;
@@ -38,15 +39,19 @@ class HomePageController extends Controller
             // ->join('itemfree_videos_ads', 'itemfree_ads.state', '=', 'itemfree_videos_ads.state')
             ->inRandomOrder()
             ->get());
+        $test = AdsImages::where('itemfree_ads_id', 2)->first();;
 
         $fetch_videos = HomePageResource::collection(DB::table('itemfree_videos_ads')
             ->where('itemfree_videos_ads.categories', 'Apartment')
             ->where('itemfree_videos_ads.state', $state)->inRandomOrder()
             ->get());;
 
+        // check if the person does not allow their location to be turned on 
+
 
         return response()->json([
             'status' => 200,
+            'test' => $test,
             'normalads' => $fetch_images,
             'videos' => $fetch_videos
         ]);
@@ -96,33 +101,6 @@ class HomePageController extends Controller
         ]);
     }
 
-    public function generalTrending()
-    {
-        // this function will produce all ads base on location of the user or other wise , which will just be videos alone 
-        /// note will be changing it to images sometimes 
-        // Ads to present , Automotive , Womens, phones , baby product ,House , Apartment 
-        $categories = ['Automotive, Vehicles', 'Womens under waress', 'Phones, Tablets', 'Baby Products', 'House', 'Apartment'];
-        $fetch_images =
-            HomePageControllerResource::collection(
-                DB::table('itemfree_ads')
-                    ->whereIn('itemfree_ads.categories',$categories)
-                    ->inRandomOrder()
-                    ->get()
-            );
-
-        if ($fetch_images) {
-            return response()->json([
-                'status' => 200,
-                'normalads' => $fetch_images,
-                // 'local_gov' => $homepagerender_local_gov
-            ]);
-        }
-        return response()->json([
-            'status' => 500,
-            'messages' => 'something went worng',
-            // 'local_gov' => $homepagerender_local_gov
-        ]);
-    }
 
 
 
@@ -191,6 +169,57 @@ class HomePageController extends Controller
     }
 
 
+
+
+    public function generalTrending()
+    {
+        // this function will produce all ads base on location of the user or other wise , which will just be videos alone 
+        /// note will be changing it to images sometimes 
+        // Ads to present , Automotive , Womens, phones , baby product ,House , Apartment 
+
+        $categories = ['Automotive, Vehicles', 'Womens under waress', 'Phones, Tablets', 'Baby Products', 'House', 'Apartment','Laptops'];
+
+        $fetch_images = HomePageControllerResource::collection(DB::table('itemfree_ads')
+            ->whereIn('itemfree_ads.categories', $categories)
+            ->inRandomOrder()
+            ->get());
+        if ($fetch_images) {
+            return response()->json([
+                'status' => 200,
+                'normalads' => $fetch_images
+            ]);
+        }
+        return response()->json([
+            'status' => 500,
+            'messages' => 'something went worng',
+            // 'local_gov' => $homepagerender_local_gov
+        ]);
+    }
+
+    public function generalTrendingPage($id)
+    {
+        // join the itemfreead and adimages , so when user clicks on one post it show remaining information of that post 
+        $fetch_details  = ItemfreeAds::find($id);
+        $fetch_details->adsimages()->where('itemfree_ads_id', $id)->get();
+
+        $fetch_details_others  = ItemfreeAds::find($id)->adsimages()->where('itemfree_ads_id', $id)->inRandomOrder()->get();
+        if ($fetch_details) {
+            return response()->json([
+                'status' => 200,
+                'data' => $fetch_details,
+                'other_data' => $fetch_details_others
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'data' => "no data found"
+            ]);
+        }
+    }
+    public function simlairAds()
+    {
+        // showing other items 
+    }
 
     public function trendingads()
     {

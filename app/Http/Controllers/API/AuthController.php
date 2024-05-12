@@ -25,7 +25,7 @@ class AuthController extends Controller
                 'message' => 'You are not unauthenticated Procced to login or register '
             ]);
         }
-        $info = User::where('id',$user->id)->first();
+        $info = User::where('id',$user->id)->get();
         if(!$info){
             return response()->json([
                 'status' => 401,
@@ -94,8 +94,10 @@ class AuthController extends Controller
         $token=  $user->createToken("API-TOKEN".$user->email)->plainTextToken;
         return response()->json([
             'token'=>$token,
+            'profileImage'=>$user->profileImage,
             'user'=>$user->email,
-            'user-name'=>$user->name
+            'user-name'=>$user->name,
+            'id'=>$user->id
         ]);
 
     }
