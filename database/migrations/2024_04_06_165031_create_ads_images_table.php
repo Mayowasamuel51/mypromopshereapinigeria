@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('ads_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(ItemsAds::class);
-            $table->foreignIdFor(ItemfreeAds::class);
+            $table->foreignIdFor(ItemsAds::class)->nullable();
+            $table->foreignIdFor(ItemfreeAds::class)->nullable();
         
             $table->string('itemadsimagesurls');
             $table->timestamps();

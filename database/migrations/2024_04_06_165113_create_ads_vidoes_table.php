@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('ads_vidoes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(ItemsAdsvidoes::class);
+            $table->foreignIdFor(ItemsAdsvidoes::class)->nullable();
             $table->string('itemadsvideos');
-            $table->foreignIdFor(ItemfreeVideosAds::class);
+            $table->foreignIdFor(ItemfreeVideosAds::class)->nullable();
             $table->timestamps();
         });
     }
