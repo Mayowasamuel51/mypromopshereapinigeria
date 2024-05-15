@@ -66,7 +66,7 @@ class ItemfreeAdsController extends Controller
             'description' => 'required',
             // 'price_range' => 'required|integer',
             'state' => 'required',
-            'local_gov' => 'required',
+            // 'local_gov' => 'required',
             // 'headlines' => 'required',
             'titleImageurl' => 'required'
         ]);
