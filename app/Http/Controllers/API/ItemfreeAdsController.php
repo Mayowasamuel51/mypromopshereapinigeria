@@ -62,13 +62,13 @@ class ItemfreeAdsController extends Controller
         // we need to count the times it was used 
         // every post == 1 eliter noraml post or videos post 
         $request->validate([
-            // 'categories' => 'required',
-            // 'description' => 'required',
+            'categories' => 'required',
+            'description' => 'required',
             // 'price_range' => 'required|integer',
-            // 'state' => 'required',
-            // 'local_gov' => 'required',
+            'state' => 'required',
+            'local_gov' => 'required',
             // 'headlines' => 'required',
-            // 'titleImageurl' => 'required'
+            'titleImageurl' => 'required'
         ]);
 
         // check if free times is more than 20 times 
