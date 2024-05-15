@@ -177,12 +177,64 @@ class HomePageController extends Controller
         /// note will be changing it to images sometimes 
         // Ads to present , Automotive , Womens, phones , baby product ,House , Apartment 
 
-        $categories = ['Automotive, Vehicles', 'Womens under waress', 'Phones, Tablets', 'Baby Products', 'House', 'Apartment','Laptops'];
+        $categories = [
+            "Laptops",
+        
+            "Property", 
+        
+            "Phones, Tablets", 
+        
+            "Fragrances",
+        
+            "Skincare",
+        
+            "Groceries",
+        
+            "home-decoration",
+        
+            "Furniture ,Home ",
+           
+            "Womens bikins",
+        
+            "Kids , Baby dresses", 
+        
+            "Womens under waress",
+        
+            "womens-dresses",
+        
+            "womens-shoes",
+        
+            "Pets",
+        
+            "Mens-shirts",
+        
+            "Mens-shoes",
+        
+            "Mens-watches",
+        
+            "Womens-watches",
+        
+            "Womens-bags",
+        
+            "Womens-jewellery",
+           
+            "Automotive , Vehicles",
+        
+            "Motorcycle",
+        
+            "Apartment",
+        
+            "Fashion",
+        
+            "Sport Dresses"];
+
+        // $state = ['Lagos']
 
         $fetch_images = HomePageControllerResource::collection(DB::table('itemfree_ads')
             ->whereIn('itemfree_ads.categories', $categories)
             ->inRandomOrder()
             ->get());
+            
         if ($fetch_images) {
             return response()->json([
                 'status' => 200,
