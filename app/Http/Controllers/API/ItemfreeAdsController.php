@@ -101,7 +101,7 @@ class ItemfreeAdsController extends Controller
                 $file = $folderPath;
                 // . $fileName;
                 Storage::put($file, $filetitleimage);
-                $items->titleImageurl = 'storage/'.$fileName;
+                $items->titleImageurl = $fileName;
                 $items->save();
                 if (
                     $items
