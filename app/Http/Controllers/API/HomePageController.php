@@ -230,7 +230,9 @@ class HomePageController extends Controller
 
         // $state = ['Lagos']
 
-        $fetch_images = HomePageControllerResource::collection(DB::table('itemfree_ads')
+        $fetch_images = HomePageControllerResource::collection(
+            // symlink(storage_path('/app/public'), public_path('storage/'))
+            DB::table('itemfree_ads')
             ->whereIn('itemfree_ads.categories', $categories)
             ->inRandomOrder()
             ->get());
