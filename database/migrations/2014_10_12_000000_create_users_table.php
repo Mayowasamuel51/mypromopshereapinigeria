@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('google_id')->nullable();
             $table->integer("freetimes") ->default('0')->nullable();
             $table->string('date_buy_count')->integer()->nullable();
-            $table->string('id_number');
+            $table->string('id_number')->nullable();
             $table->string('current_plan') ->default('freeplan')->nullable();
             $table->string('country')->nullable();
             $table->string('location')->nullable();
@@ -27,7 +28,7 @@ return new class extends Migration
             $table->string('aboutMe')->nullable();
             $table->string('profileImage')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

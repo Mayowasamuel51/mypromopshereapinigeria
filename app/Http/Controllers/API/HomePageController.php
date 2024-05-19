@@ -13,6 +13,12 @@ use App\Models\ItemfreeAds;
 
 class HomePageController extends Controller
 {
+
+    public  function __construct(){
+        $this->middleware('throttle:120,1')->only([
+            'generalTrending'
+        ]);
+    }
     public function categoriesapi()
     {
         // display all categories api in database and make query to one when they click one 
@@ -224,7 +230,7 @@ class HomePageController extends Controller
         
             "Apartment",
         
-            "Fashion",
+            "Fashion",  /// on we put Fashion
         
             "Sport Dresses"];
 
@@ -270,11 +276,7 @@ class HomePageController extends Controller
             ]);
         }
     }
-    public function simlairAds()
-    {
-        // showing other items 
-    }
-
+   
     public function trendingads()
     {
     }

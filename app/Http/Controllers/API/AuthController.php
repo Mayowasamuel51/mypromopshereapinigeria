@@ -8,14 +8,69 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-
-class AuthController extends Controller
-{
+use Laravel\Socialite\Facades\Socialite;
+use App\Traits\HttpResponse;
+use GuzzleHttp\Exception\ClientException;
+use Laravel\Socialite\Contracts\User as SocialiteUser;
+use Illuminate\Http\JsonResponse;
+class AuthController extends Controller{
+  
     //
-     public function __construct(){
-        $this->middleware('auth:sanctum')
-        ->except(['sighup','login']);
+    //  public function __construct(){
+    //     $this->middleware('auth:sanctum')
+    //     ->except(['sighup','login']);
+    // }
+    use HttpResponse;
+    public function redirectToAuth(): JsonResponse  {
+        return response()->json([
+            'url' => Socialite::driver('google')
+                         ->stateless()
+                         ->redirect()
+                         ->getTargetUrl(),
+        ]);
     }
+    public function handleAuthCallback(): JsonResponse  {
+        try {
+            /** @var SocialiteUser $socialiteUser */
+            $socialiteUser = Socialite::driver('google')->stateless()->user();
+        } catch (ClientException $e) {
+            return response()->json(['error' => 'Invalid credentials provided.'], 422);
+        }
+
+        /** @var User $user */
+        $user = User::query()
+        ->firstOrCreate(
+                [
+                    'email' => $socialiteUser->email,
+                ],
+                [
+                    'email_verified_at' => now(),
+                    'name' => $socialiteUser->name,
+                    'google_id' => $socialiteUser->id,
+                    'avatar' => $socialiteUser->avatar,
+                    'current_plan'=>"free_plan", 
+                    'id_number'=> rand(1222,45543),
+                    'password' => $socialiteUser->password,
+                ]
+            );
+            // Auth::login($user);
+            $token=$user->createToken('google-token'.$user->name)->plainTextToken;
+        return response()->json([
+            'token'=>$token,
+            'profileImage'=>$user->profileImage,
+            'user'=>$user->email,
+            'user-name'=>$user->name,
+            'id'=>$user->id,
+            'users' => $user,
+            // 'token' => $user->createToken('google-token'.$user->name)->plainTextToken,
+            // 'token_type' => 'Bearer',
+        ]);
+    }
+
+
+
+
+
     public function  getInfo(){
         // get user info base on token to show for 
         $user = Auth::user();
