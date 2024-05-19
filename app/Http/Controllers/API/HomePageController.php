@@ -230,7 +230,9 @@ class HomePageController extends Controller
 
         // $state = ['Lagos']
         // will be changing the table manuelly for now , and include the paid user table to it soon 
-        $fetch_images = HomePageControllerResource::collection(DB::table('itemfree_ads')
+        $fetch_images = HomePageControllerResource::collection(
+            // symlink(storage_path('/app/public'), public_path('storage/'))
+            DB::table('itemfree_ads')
             ->whereIn('itemfree_ads.categories', $categories)
             ->inRandomOrder()
             ->get());
@@ -302,3 +304,14 @@ class HomePageController extends Controller
         // ->join('orders', 'users.id', '=', 'orders.user_id')
         // ->select('users.*', 'contacts.phone', 'orders.price')
         // ->get();
+
+
+
+
+
+
+
+
+
+
+
