@@ -12,18 +12,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('personalizeds', function (Blueprint $table) {
+        Schema::create('personalized_video_stores', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
             $table->string('title')->nullable();
-            $table->string("categories")->nullable();
+             $table->string("categories")->nullable();
             $table->string('description')->nullable();
             $table->string('price')->nullable();
             $table->string('state')->nullable();
             $table->string("local_gov")->nullable();
             $table->string("productName")->nullable();
             $table->string('headlines')->nullable();
-            $table->string('titleImageurl')->nullable();
+            $table->string('titleimage')->nullable();
             $table->string('itemadsid')->nullable();
             $table->string('otherimages');
             $table->timestamps();
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('personalizeds');
+        Schema::dropIfExists('personalized_video_stores');
     }
 };

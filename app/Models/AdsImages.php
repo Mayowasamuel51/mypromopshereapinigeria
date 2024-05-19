@@ -20,4 +20,7 @@ class AdsImages extends Model
         return $this->belongsTo(ItemfreeAds::class);
     }
 
+
+    
+
 }

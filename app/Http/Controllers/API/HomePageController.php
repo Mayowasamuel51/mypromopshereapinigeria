@@ -181,7 +181,7 @@ class HomePageController extends Controller
     {
         // this function will produce all ads base on location of the user or other wise , which will just be videos alone 
         /// note will be changing it to images sometimes 
-        // Ads to present , Automotive , Womens, phones , baby product ,House , Apartment 
+
 
         $categories = [
             "Laptops",
@@ -235,7 +235,7 @@ class HomePageController extends Controller
             "Sport Dresses"];
 
         // $state = ['Lagos']
-
+        // will be changing the table manuelly for now , and include the paid user table to it soon 
         $fetch_images = HomePageControllerResource::collection(
             // symlink(storage_path('/app/public'), public_path('storage/'))
             DB::table('itemfree_ads')
@@ -262,7 +262,8 @@ class HomePageController extends Controller
         $fetch_details  = ItemfreeAds::find($id);
         $fetch_details->adsimages()->where('itemfree_ads_id', $id)->get();
 
-        $fetch_details_others  = ItemfreeAds::find($id)->adsimages()->where('itemfree_ads_id', $id)->inRandomOrder()->get();
+        $fetch_details_others  = 
+        ItemfreeAds::find($id)->adsimages()->where('itemfree_ads_id', $id)->inRandomOrder()->get();
         if ($fetch_details) {
             return response()->json([
                 'status' => 200,

@@ -35,6 +35,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //update user information from setting page .............................................
     Route::put('/user/settings/{iduser}', [UserController::class, 'updateuserinfo']);
+
+
+
+    /// personalized routes 
 });
 
 //   Home-page Public  api and other  public   apis for other pages 
