@@ -312,7 +312,7 @@ class HomePageController extends Controller
         if ($fetch_images) {
             return response()->json([
                 'status' => 200,
-                'singleads'=>$fetch_images,
+                'normalads'=>$fetch_images,
                 'other_images' => $fetch_details
                 // $test
                 //  $fetch_images
