@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AdsImagesResource;
 use App\Http\Resources\HomePageControllerResource;
 use App\Http\Resources\HomePageResource;
 use App\Models\AdsImages;
@@ -246,76 +247,21 @@ class HomePageController extends Controller
             ->inRandomOrder()
             ->get()
         );
-        // $fetch_details  = ItemfreeAds::all();
-        // $fetch_details->adsimages()->where('itemfree_ads_id',$fetch_details->id )->get();
-        // $fetch_details_others  = 
-        // ItemfreeAds::find($id)->adsimages()->where('itemfree_ads_id', $id)->inRandomOrder()->get();
-        $cate= [
-            "Laptops",
-        
-            "Property", 
-        
-            "Phones, Tablets", 
-        
-            "Fragrances",
-        
-            "Skincare",
-        
-            "Groceries",
-        
-            "home-decoration",
-        
-            "Furniture ,Home ",
-           
-            "Womens bikins",
-        
-            "Kids , Baby dresses", 
-        
-            "Womens under waress",
-        
-            "womens-dresses",
-        
-            "womens-shoes",
-        
-            "Pets",
-        
-            "Mens-shirts",
-        
-            "Mens-shoes",
-        
-            "Mens-watches",
-        
-            "Womens-watches",
-        
-            "Womens-bags",
-        
-            "Womens-jewellery",
-           
-            "Automotive , Vehicles",
-        
-            "Motorcycle",
-        
-            "Apartment",
-        
-            "Fashion",  /// on we put Fashion
-        
-            "Sport Dresses"];
-
-        
+     
         $fetch_details  =  DB::table('ads_images')
         ->join('itemfree_ads', function (JoinClause $join) {
             $join->on('ads_images.itemfree_ads_id', '=', 'itemfree_ads.id');
         })
+        ->inRandomOrder()
         ->get();
-        // $fetch_details_others = ItemfreeAds::find($id)->adsimages()->where('itemfree_ads_id', $id)->get();
+        $adimages_data = AdsImagesResource::collection(AdsImages::all());
 
         if ($fetch_images) {
             return response()->json([
                 'status' => 200,
-                'normalads'=>$fetch_images,
-                'other_images' => $fetch_details
-                // $test
-                //  $fetch_images
+                'normalads'  =>  $fetch_images,
+                'other_images' => $adimages_data
+                // $fetch_details
             ]);
         }
         return response()->json([
@@ -354,7 +300,11 @@ class HomePageController extends Controller
 
 
 
-
+   // $fetch_details  = ItemfreeAds::all();
+        // $fetch_details->adsimages()->where('itemfree_ads_id',$fetch_details->id )->get();
+        // $fetch_details_others  = 
+        // ItemfreeAds::find($id)->adsimages()->where('itemfree_ads_id', $id)->inRandomOrder()->get();
+       
 
 // note the categoriesapi will return a response , it the repsonse we are gonna use  in this categoriesapiSinglePage   !!!!!
         // listing all  service or trending under each categories clicked upon 
