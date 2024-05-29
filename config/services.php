@@ -36,5 +36,12 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
+    // algolia
+
+    'algolia' => [
+        'client_id' => env('Application_Id'),
+        'client_secret' => env('API_key'),
+        'redirect' => env('Search_API_Key'),
+    ],
 
 ];

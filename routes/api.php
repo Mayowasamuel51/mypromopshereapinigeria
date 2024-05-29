@@ -19,8 +19,6 @@ Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
 Route::middleware('auth:sanctum')->group(function () {
     // get User info route 
     Route::get('/getuser', [AuthController::class, 'getInfo']);
-    //get user profile details 
-    Route::get('/getuser/{id}', [UserController::class, 'settings']);
 
     // free  Ads Routes  
     Route::post('/freeads', [ItemfreeAdsController::class, 'freeLimitedAds']);
@@ -35,11 +33,39 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //update user information from setting page .............................................
     Route::put('/user/settings/{iduser}', [UserController::class, 'updateuserinfo']);
+      //get user profile details 
+    Route::get('/getuser/{id}', [UserController::class, 'settings']);
+   
 
 
-
-    /// personalized routes 
+     // PersonalUploads for a user
+     Route::get('/posts/{id}', [UserController::class, 'personalUploads']);
+     Route::get('/postsvideos/{id}', [UserController::class, 'personalUploads']);
 });
+
+
+// Public Api for login and Sighup 
+Route::post('/sighup', [AuthController::class, 'sighup']);
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/logout', [AuthController::class, 'logout']);
+
+// Homepage search side 
+Route::get('/search/{query}',[HomePageController::class, 'searchapi']);
+
+//  Trending Ads Api 
+Route::get('/trendingads', [HomePageController::class, 'generalTrending']);
+// get id 
+Route::get('/trendingads/{id}', [HomePageController::class, 'generalTrendingPage']);
+
+// Top videoes Ads 
+Route::get('/trendingadsvideos', [HomePageController::class, 'generalTopVideos']);
+
+Route::get('/trendingadsvideos/{id}', [HomePageController::class, 'generalTopVideosPage']);
+
+
+
 
 //   Home-page Public  api and other  public   apis for other pages 
 // 1)  Seaarch engine powerfull api ( auto generated word )
@@ -52,10 +78,6 @@ Route::get(
 );
 // 3) Personlized Ads Api 
 
-// 4)General  Trending Ads Api 
-Route::get('/trendingads', [HomePageController::class, 'generalTrending']);
-// get id 
-Route::get('/trendingads/{id}',[HomePageController::class, 'generalTrendingPage']);
 
 
 
@@ -84,13 +106,6 @@ Route::get('/test', [ItemfreeAdsController::class, 'showoneimage']);
 
 
 
-
-// Public Api for login and Sighup 
-Route::post('/sighup', [AuthController::class, 'sighup']);
-
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::post('/logout', [AuthController::class, 'logout']);
 
 
 

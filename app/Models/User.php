@@ -42,4 +42,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function itemuserimages(){
+        return $this->hasMany(ItemfreeAds::class);
+    }
+
+    public function itemuserivideo(){
+        return $this->hasMany(ItemfreeVideosAds::class);
+    }
 }

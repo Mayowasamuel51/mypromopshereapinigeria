@@ -6,19 +6,40 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AdsImagesResource;
 use App\Http\Resources\HomePageControllerResource;
 use App\Http\Resources\HomePageResource;
+use App\Http\Resources\HomeVideoResource;
 use App\Models\AdsImages;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\categories;
 use App\Models\ItemfreeAds;
+use App\Models\ItemfreeVideosAds;
 
 class HomePageController extends Controller
 {
 
-    public  function __construct(){
+    public  function __construct()
+    {
         $this->middleware('throttle:120,1')->only([
             'generalTrending'
+        ]);
+    }
+
+
+    public function searchapi($query)
+    {
+        $orders = HomePageControllerResource::collection(ItemfreeAds::with('user')
+            ->where('categories', 'LIKE', '%' . $query . '%')
+            ->get());
+        if ($orders->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'data' => $orders
         ]);
     }
     public function categoriesapi()
@@ -110,8 +131,6 @@ class HomePageController extends Controller
     }
 
 
-
-
     public function categoriesapiSinglePages($categories, $state, $local_gov, Request $request)
     {
         $database_table_one = ItemfreeAds::where('categories', $categories)
@@ -187,73 +206,73 @@ class HomePageController extends Controller
 
         $categories = [
             "Laptops",
-        
-            "Property", 
-        
-            "Phones, Tablets", 
-        
+
+            "Property",
+
+            "Phones, Tablets",
+
             "Fragrances",
-        
+
             "Skincare",
-        
+
             "Groceries",
-        
+
             "home-decoration",
-        
+
             "Furniture ,Home ",
-           
+
             "Womens bikins",
-        
-            "Kids , Baby dresses", 
-        
+
+            "Kids , Baby dresses",
+
             "Womens under waress",
-        
+
             "womens-dresses",
-        
+
             "womens-shoes",
-        
+
             "Pets",
-        
+
             "Mens-shirts",
-        
+
             "Mens-shoes",
-        
+
             "Mens-watches",
-        
+
             "Womens-watches",
-        
+
             "Womens-bags",
-        
+
             "Womens-jewellery",
-           
+
             "Automotive , Vehicles",
-        
+
             "Motorcycle",
-        
+
             "Apartment",
-        
+
             "Fashion",  /// on we put Fashion
-        
-            "Sport Dresses"];
+
+            "Sport Dresses"
+        ];
 
         // $state = ['Lagos']
         // will be changing the table manuelly for now , and include the paid user table to it soon 
         $fetch_images =
-         HomePageControllerResource::collection(
-            // symlink(storage_path('/app/public'), public_path('storage/'))
-            DB::table('itemfree_ads')
-            ->whereIn('itemfree_ads.categories', $categories)
-            // ->adImages()
-            ->inRandomOrder()
-            ->get()
-        );
-     
+            HomePageControllerResource::collection(
+                DB::table('itemfree_ads')
+                    ->whereIn('itemfree_ads.categories', $categories)
+                    ->inRandomOrder()
+                    // ->paginate(8)
+                    ->get()
+            );
+
         $fetch_details  =  DB::table('ads_images')
-        ->join('itemfree_ads', function (JoinClause $join) {
-            $join->on('ads_images.itemfree_ads_id', '=', 'itemfree_ads.id');
-        })
-        ->inRandomOrder()
-        ->get();
+            ->join('itemfree_ads', function (JoinClause $join) {
+                $join->on('ads_images.itemfree_ads_id', '=', 'itemfree_ads.id');
+            })
+            ->inRandomOrder()
+            ->get();
         $adimages_data = AdsImagesResource::collection(AdsImages::all());
 
         if ($fetch_images) {
@@ -270,6 +289,8 @@ class HomePageController extends Controller
             // 'local_gov' => $homepagerender_local_gov
         ]);
     }
+
+
 
     public function generalTrendingPage($id)
     {
@@ -291,7 +312,92 @@ class HomePageController extends Controller
             ]);
         }
     }
-   
+
+    public function generalTopVideos()
+    {
+        $categories = [
+            "Laptops",
+
+            "Property",
+
+            "Phones, Tablets",
+
+            "Fragrances",
+
+            "Skincare",
+
+            "Groceries",
+
+            "home-decoration",
+
+            "Furniture ,Home ",
+
+            "Womens bikins",
+
+            "Kids , Baby dresses",
+
+            "Womens under waress",
+
+            "womens-dresses",
+
+            "womens-shoes",
+
+            "Pets",
+
+            "Mens-shirts",
+
+            "Mens-shoes",
+
+            "Mens-watches",
+
+            "Womens-watches",
+
+            "Womens-bags",
+
+            "Womens-jewellery",
+
+            "Automotive , Vehicles",
+
+            "Motorcycle",
+
+            "Apartment",
+
+            "Fashion",  /// on we put Fashion
+
+            "Sport Dresses"
+        ];
+        $fetch_top_videos = HomeVideoResource::collection(
+            DB::table('itemfree_videos_ads')
+                ->whereIn('itemfree_videos_ads.categories', $categories)
+                ->inRandomOrder()
+                ->get()
+        );
+        if ($fetch_top_videos->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'videos'  =>  $fetch_top_videos
+        ]);
+    }
+
+    public function generalTopVideosPage($id){
+        $fetch_details  =  HomeVideoResource::collection(ItemfreeVideosAds::where('id', $id)->get());
+        if ($fetch_details->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404); 
+        }
+        return response()->json([
+            'status' => 200,
+            'data' => $fetch_details,
+        ]);
+    }
+
     public function trendingads()
     {
     }
@@ -324,14 +430,3 @@ class HomePageController extends Controller
         // ->join('orders', 'users.id', '=', 'orders.user_id')
         // ->select('users.*', 'contacts.phone', 'orders.price')
         // ->get();
-
-
-
-
-
-
-
-
-
-
-

@@ -17,11 +17,16 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->string("user_image")->nullable();
             $table->string("user_name")->nullable();
+            $table->string("user_phone")->nullable();
+            $table->string("user_website")->nullable();
             $table->integer("freetimes") ->default('0')->nullable();
             $table->string("titleImageurl")->nullable();
+
             $table->integer("price_range")->nullable();
             $table->string("usedOrnew")->nullable();
             $table->string("productName")->nullable();
+            // $table->index("categories")->
+            // $table->dro
             $table->string("categories")->nullable();
             $table->string("description")->nullable();
             $table->string("negotiation")->nullable();

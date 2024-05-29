@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->string("user_image")->nullable();
             $table->string("user_name")->nullable();
+            $table->string("user_phone")->nullable();
+            $table->string("user_website")->nullable();
+            $table->integer("freetimes") ->default('0')->nullable();
             $table->string("titlevideourl")->nullable();
             $table->integer("price_range")->nullable();
             $table->string("usedOrnew")->nullable();

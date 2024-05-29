@@ -4,12 +4,37 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Models\ItemfreeAds;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     //
+    public function personalUploads($id){
+        // if ($userUploads->isEmpty()||$userUploadsVideo->isEmpty()||$userUploads->count(  )=== 0|| $userUploadsVideo->count(  )=== 0 ) {
+        //     return response()->json([
+        //         'status' => 404,
+        //         'message' => 'No orders found matching the query.'
+        //     ], 404);
+        // }
+        if (auth('sanctum')->check()) {
+            // a user has many uploads 
+            $userUploads =  User::find($id);
+            // ->itemuserimages()->where('user_id', $id)->latest()->get();
+            // $userUploadsVideo =  User::find($id)->itemuserivideo()->where('user_id', $id)->latest()->get();
+            return response()->json([
+                'status' => 200,
+                'posts' => $userUploads,
+                // 'postvideos'=>$userUploadsVideo
+            ]);
+        }
+        return response()->json([
+                    'status' => 404,
+                    'message' => 'No orders found matching the query.'
+                ], 404);
+       
+    }
     public function updateuserinfo(Request $request, $iduser)
     {
         $validator = Validator::make($request->all(), [
@@ -28,10 +53,11 @@ class UserController extends Controller
                     // $user_infomation->name = $request->names;
                     $user_infomation->profileImage =   $request->profileImage;
                     // $user_infomation->id = auth()->user()->id;
-                    // $user_infomation->websiteName = $request->websiteName;
+                    $user_infomation->websiteName = $request->websiteName;
                     $user_infomation->messageCompany = $request->messageCompany;
-                    // $user_infomation->aboutMe = $request->aboutMe;
-                    $user_infomation->save();
+                    $user_infomation->aboutMe = $request->aboutMe;
+                    $user_infomation->brandName = $request->brandName;
+                    $user_infomation->save(); 
                     // return response()->json([
                     //     'status'=>200,
                     //     'updated' => $user_infomation
