@@ -481,7 +481,7 @@ class HomePageController extends Controller
         ->where('discount','yes')
         ->where('itemfree_ads.categories', $categories)
         ->inRandomOrder()
-        ->limit()->get();
+        ->limit(40)->get();
         if ( $discount_options->isEmpty()) {
             return response()->json([
                 'status' => 404,
