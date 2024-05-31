@@ -39,7 +39,7 @@ class ItemfreeAdsController extends Controller
         $filetitleimage = $request->itemadsimagesurls;
         $folderPath = "public/";
         $image_parts = explode(";base64,",  $filetitleimage);
-        $image_type_aux = explode("data:image/png", $image_parts[0]) ||  explode("data:image/svg+xml", $image_parts[0])|| explode("data:image/jpeg", $image_parts[0]) ||  explode("data:image/jpg", $image_parts[0]) ||  explode("data:image/svg", $image_parts[0]) ;  
+        $image_type_aux = explode("data:image/png", $image_parts[0]) ||  explode("data:image/jpeg", $image_parts[0]) ||  explode("data:image/jpg", $image_parts[0]) ||  explode("data:image/svg", $image_parts[0]) ;  
         $image_base64 = base64_decode($image_parts[1], true);
         $fileName =  uniqid() . '.' . pathinfo($image_parts[0], PATHINFO_EXTENSION);
         $image_base64 = base64_decode($image_parts[1], true);
@@ -118,7 +118,7 @@ class ItemfreeAdsController extends Controller
             $image_parts = explode(";base64,",  $filetitleimage);
             // (preg_match("/^data:image\/(png|jpeg|jpg|svg);base64,/i");
             $file_image_types = ['png', 'jpeg', 'jpg', 'svg'];
-            $image_type_aux = explode("data:image/png", $image_parts[0]) ||  explode("data:image/jpeg", $image_parts[0]) ||  explode("data:image/jpg", $image_parts[0]) ||  explode("data:image/svg", $image_parts[0])  || explode("data:image/svg+xml", $image_parts[0]) ;
+            $image_type_aux = explode("data:image/png", $image_parts[0]) ||  explode("data:image/jpeg", $image_parts[0]) ||  explode("data:image/jpg", $image_parts[0]) ||  explode("data:image/svg", $image_parts[0]) ;
 
           
             // $image_type =  $image_type_aux[1];
