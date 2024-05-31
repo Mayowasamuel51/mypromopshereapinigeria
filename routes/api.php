@@ -59,9 +59,18 @@ Route::get('/trendingads', [HomePageController::class, 'generalTrending']);
 // get id 
 Route::get('/trendingads/{id}', [HomePageController::class, 'generalTrendingPage']);
 
+
+// Top level 
+Route::get('/toplevel', [HomePageController::class, 'toplevelads']);
+// Route::get('/toplevel/{id}', [HomePageController::class, 'toplevelads']);
+
+//Discount Link 
+Route::get('/discount', [HomePageController::class, 'Discount']);
+// Route::get('/discount/{id}', [HomePageController::class, 'Discount']);
+
+
 // Top videoes Ads 
 Route::get('/trendingadsvideos', [HomePageController::class, 'generalTopVideos']);
-
 Route::get('/trendingadsvideos/{id}', [HomePageController::class, 'generalTopVideosPage']);
 
 

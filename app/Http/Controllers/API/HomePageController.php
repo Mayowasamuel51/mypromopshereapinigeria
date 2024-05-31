@@ -398,6 +398,103 @@ class HomePageController extends Controller
         ]);
     }
 
+    public function toplevelads(){
+        // this top level function will be for showing different categories that hasnt showing in the trending part 
+        /// also we be changing to video part some times 
+        // also this will be showing dicount price 
+        $categories = [
+            "Laptops",
+            "Property",
+            "Phones, Tablets",
+            "Fragrances",
+            "Skincare",
+            "Groceries",
+            "home-decoration",
+            "Furniture ,Home ",
+            "Womens bikins",
+            "Kids , Baby dresses",
+            "Womens under waress",
+            "womens-dresses",
+            "womens-shoes",
+            "Pets",
+            "Mens-shirts",
+            "Mens-shoes",
+            "Mens-watches",
+            "Womens-watches",
+            "Womens-bags",
+            "Womens-jewellery",
+            "Automotive , Vehicles",
+            "Motorcycle",
+            "Apartment",
+            "Fashion",  /// on we put Fashion
+            "Sport Dresses"
+        ];
+
+        $fetch_images = HomePageControllerResource::collection(
+            DB::table('itemfree_ads')
+                ->whereIn('itemfree_ads.categories', $categories)
+                ->inRandomOrder()
+                ->get()
+        );
+        if ($fetch_images->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'normalads'  =>  $fetch_images,
+        ]);
+    }
+
+    public function  Discount(){
+        // this is discount option will be a navbar option on the home-page
+        $categories = [
+            "Laptops",
+            "Property",
+            "Phones, Tablets",
+            "Fragrances",
+            "Skincare",
+            "Groceries",
+            "home-decoration",
+            "Furniture ,Home ",
+            "Womens bikins",
+            "Kids , Baby dresses",
+            "Womens under waress",
+            "womens-dresses",
+            "womens-shoes",
+            "Pets",
+            "Mens-shirts",
+            "Mens-shoes",
+            "Mens-watches",
+            "Womens-watches",
+            "Womens-bags",
+            "Womens-jewellery",
+            "Automotive , Vehicles",
+            "Motorcycle",
+            "Apartment",
+            "Fashion",  /// on we put Fashion
+            "Sport Dresses"
+        ];
+        $discount_options = DB::table('itemfree_ads')
+        ->where('discount','yes')
+        ->where('itemfree_ads.categories', $categories)
+        ->inRandomOrder()
+        ->limit()->get();
+        if ( $discount_options->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'discount'=>$discount_options
+        ]);
+    }
+
+    
     public function trendingads()
     {
     }
