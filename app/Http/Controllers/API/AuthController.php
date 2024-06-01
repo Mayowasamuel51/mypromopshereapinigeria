@@ -38,8 +38,7 @@ class AuthController extends Controller{
         }
 
         /** @var User $user */
-        $user = User::query()
-        ->firstOrCreate(
+        $user =  User::updateOrCreate(
                 [
                     'email' => $socialiteUser->email,
                 ],
@@ -54,7 +53,7 @@ class AuthController extends Controller{
                 ]
             );
             // Auth::login($user);
-            $token=$user->createToken('google-token'.$user->name)->plainTextToken;
+        $token=$user->createToken('google-token'.$user->name)->plainTextToken;
         return response()->json([
             'token'=>$token,
             'profileImage'=>$user->profileImage,
@@ -151,6 +150,8 @@ class AuthController extends Controller{
             'token'=>$token,
             'profileImage'=>$user->profileImage,
             'user'=>$user->email,
+            'user_phone'=>$user->user_phone,
+            'user_website'=>$user->websiteName,
             'user-name'=>$user->name,
             'id'=>$user->id
         ]);

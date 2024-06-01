@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\HomePageControllerResource;
 use App\Models\ItemfreeAds;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -71,8 +72,6 @@ class UserController extends Controller
             }
         }
     }
-
-
     public function settings($id){
         $user  = User::where('id',$id)->get();
         // findOrFail($id);
@@ -84,6 +83,41 @@ class UserController extends Controller
                 ]);
             }
         }
+    }
+
+    public function profileData($id){
+        // $user = User::where('id',$id)->get();
+        $user_infomation =     HomePageControllerResource::collection( ItemfreeAds::where('user_id',$id)->get());
+        if( $user_infomation ->isEmpty()){
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        //show the user uploads in the past in a nice format 
+      
+        // $user_infomation->itemuserimages()->where('user_id',$id)->get();
+        return response()->json([
+            'status' => 200,
+            'data' => $user_infomation
+        ], 200);
+
+    }
+
+    public function Userprofile($id){
+        // $user = User::where('id',$id)->get();
+        $user_information = User::where('id',$id)->get();
+        if($user_information->isEmpty()){
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'data' =>  $user_information
+        ], 200);
+
     }
 }
 

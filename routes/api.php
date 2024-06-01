@@ -30,7 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/normalads', [ItemsAdsController::class, 'ItemsAdsStore']);
 
 
-
     //update user information from setting page .............................................
     Route::put('/user/settings/{iduser}', [UserController::class, 'updateuserinfo']);
       //get user profile details 
@@ -73,6 +72,10 @@ Route::get('/discount', [HomePageController::class, 'Discount']);
 Route::get('/trendingadsvideos', [HomePageController::class, 'generalTopVideos']);
 Route::get('/trendingadsvideos/{id}', [HomePageController::class, 'generalTopVideosPage']);
 
+
+// User click  profile Api   ..see other this be the users
+Route::get('/profilecheck/{id}', [UserController::class, 'profileData']);
+Route::get('/profile/{id}', [UserController::class, 'Userprofile']);
 
 
 
