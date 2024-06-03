@@ -122,6 +122,7 @@ class AuthController extends Controller{
         }
     }
 
+
     public function login(Request $request){
         /// this is not working well .still need to fix need to checking of passwords
         $request->validate([
@@ -129,22 +130,16 @@ class AuthController extends Controller{
             'password'=>'required'
         ]);
         $user = User::where('email', $request->email)->first();
-        if(!$user){
+        if(!$user  && Hash::check($request->password, $user->password)){
             throw ValidationException::withMessages([
                 'email'=>['email not correct']
             ], 401);
-    
         }
-        // if(!Auth::attempt($request->only(['email',Hash::check($request->password, $user->password)]))){
-        //     return  response()->json(['', 
-        //     "inviad users or worng password"=> 422]);
+        // if(Hash::check($request->password, $user->password)){
+        //     throw ValidationException::withMessages([
+        //         'email'=>['email not correct or password']
+        //     ], 422);
         // }
-        // $user = User::where('email', $request->email)->first();
-        if(Hash::check($request->password, $user->password)){
-            throw ValidationException::withMessages([
-                'email'=>['email not correct or password']
-            ], 422);
-        }
         $token=  $user->createToken("API-TOKEN".$user->email)->plainTextToken;
         return response()->json([
             'token'=>$token,
@@ -167,3 +162,9 @@ class AuthController extends Controller{
         ]);
     }
 }
+
+        // if(!Auth::attempt($request->only(['email'=>$request->email ,'password'=>Hash::check($request->password, $user->password)]))){
+        //     return  response()->json([ 
+        //     "inviad users or worng password"=> 422]);
+        // }
+        // $user = User::where('email', $request->email)->first();

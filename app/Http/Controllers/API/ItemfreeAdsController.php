@@ -138,11 +138,8 @@ class ItemfreeAdsController extends Controller
                 $fileName =  uniqid() . '.png';
                 $file = $folderPath;
                 // . $fileName;
-             $mainfile =    Storage::put($file, $filetitleimage);
-                $items->titleImageurl = $mainfile;
-
-
-         
+                $mainfile =    Storage::put($file, $filetitleimage);
+                $items->titleImageurl = $mainfile;         
                 $items->save();
                 if (
                     $items

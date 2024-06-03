@@ -19,16 +19,11 @@ Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
 Route::middleware('auth:sanctum')->group(function () {
     // get User info route 
     Route::get('/getuser', [AuthController::class, 'getInfo']);
-
+    
     // free  Ads Routes  
     Route::post('/freeads', [ItemfreeAdsController::class, 'freeLimitedAds']);
     Route::post('/freeads/{id}', [ItemfreeAdsController::class, 'addimages']);
     Route::post('/vidoesfreeads', [ItemfreeVideosAdsController::class, 'freeLimitedAds']);
-
-
-    // Paid Ads 
-    Route::post('/normalads', [ItemsAdsController::class, 'ItemsAdsStore']);
-
 
     //update user information from setting page .............................................
     Route::put('/user/settings/{iduser}', [UserController::class, 'updateuserinfo']);
@@ -39,7 +34,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
      // PersonalUploads for a user
      Route::get('/posts/{id}', [UserController::class, 'personalUploads']);
-     Route::get('/postsvideos/{id}', [UserController::class, 'personalUploads']);
+     Route::get('/postsvideos/{id}', [UserController::class, 'personalVideos']);
+
+
+     
+    // Paid Ads 
+    Route::post('/normalads', [ItemsAdsController::class, 'ItemsAdsStore']);
 });
 
 
@@ -66,7 +66,6 @@ Route::get('/toplevel', [HomePageController::class, 'toplevelads']);
 //Discount Link 
 Route::get('/discount', [HomePageController::class, 'Discount']);
 // Route::get('/discount/{id}', [HomePageController::class, 'Discount']);
-
 
 // Top videoes Ads 
 Route::get('/trendingadsvideos', [HomePageController::class, 'generalTopVideos']);

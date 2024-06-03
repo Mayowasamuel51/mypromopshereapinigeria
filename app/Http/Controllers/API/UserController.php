@@ -9,9 +9,7 @@ use App\Models\ItemfreeAds;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
-{
-    //
+class UserController extends Controller{
     public function personalUploads($id){
         // if ($userUploads->isEmpty()||$userUploadsVideo->isEmpty()||$userUploads->count(  )=== 0|| $userUploadsVideo->count(  )=== 0 ) {
         //     return response()->json([
@@ -21,20 +19,39 @@ class UserController extends Controller
         // }
         if (auth('sanctum')->check()) {
             // a user has many uploads 
-            $userUploads =  User::find($id);
             // ->itemuserimages()->where('user_id', $id)->latest()->get();
-            // $userUploadsVideo =  User::find($id)->itemuserivideo()->where('user_id', $id)->latest()->get();
-            return response()->json([
-                'status' => 200,
-                'posts' => $userUploads,
-                // 'postvideos'=>$userUploadsVideo
-            ]);
-        }
-        return response()->json([
+        
+            $userUploadsPost =  User::find($id)->itemuserimages()->where('user_id', $id)->latest()->get();
+            if($userUploadsPost ->isEmpty()  ){
+                return response()->json([
                     'status' => 404,
                     'message' => 'No orders found matching the query.'
                 ], 404);
        
+            }
+            return response()->json([
+                'status' => 200,
+                'posts' =>$userUploadsPost,
+                
+            ]);
+        }
+     
+    }
+
+    public function personalVideos($id){
+                $userUploadsVideo =  User::find($id)->itemuserivideo()->where('user_id', $id)->latest()->get();
+                if(  $userUploadsVideo->isEmpty() ){
+                    return response()->json([
+                        'status' => 404,
+                        'message' => 'No orders found matching the query.'
+                    ], 404);
+           
+                }
+                return response()->json([
+                    'status' => 200,
+        
+                    'posts'=>$userUploadsVideo
+                ]);
     }
     public function updateuserinfo(Request $request, $iduser)
     {
