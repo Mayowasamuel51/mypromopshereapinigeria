@@ -495,6 +495,23 @@ class HomePageController extends Controller
     }
 
     
+    public function  baby(){
+        $Kids_Baby_dresses = DB::table('itemfree_ads')
+        ->where('discount','yes')
+        ->where('itemfree_ads.categories', 'Kids , Baby dresses')
+        ->inRandomOrder()
+        ->limit(40)->get();
+        if (  $Kids_Baby_dresses->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'Kids_Baby_dresses'=>  $Kids_Baby_dresses
+        ]);
+    }
     public function trendingads()
     {
     }

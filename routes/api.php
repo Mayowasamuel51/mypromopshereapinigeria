@@ -67,6 +67,10 @@ Route::get('/toplevel', [HomePageController::class, 'toplevelads']);
 Route::get('/discount', [HomePageController::class, 'Discount']);
 // Route::get('/discount/{id}', [HomePageController::class, 'Discount']);
 
+// baby Link
+Route::get('/Kids_Baby_dresses',[HomePageController::class , 'baby']);
+// Route::get('/Kids_Baby_dresses',[HomePageController::class , 'baby']);
+
 // Top videoes Ads 
 Route::get('/trendingadsvideos', [HomePageController::class, 'generalTopVideos']);
 Route::get('/trendingadsvideos/{id}', [HomePageController::class, 'generalTopVideosPage']);
@@ -75,7 +79,6 @@ Route::get('/trendingadsvideos/{id}', [HomePageController::class, 'generalTopVid
 // User click  profile Api   ..see other this be the users
 Route::get('/profilecheck/{id}', [UserController::class, 'profileData']);
 Route::get('/profile/{id}', [UserController::class, 'Userprofile']);
-
 
 
 //   Home-page Public  api and other  public   apis for other pages 
