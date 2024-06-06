@@ -37,21 +37,8 @@ class ItemfreeAdsController extends Controller
         ]);
         $item = ItemfreeAds::find($id);
         $filetitleimage = $request->itemadsimagesurls;
-        $folderPath = "public/";
-        $image_parts = explode(";base64,",  $filetitleimage);
-        $image_type_aux = explode("data:image/png", $image_parts[0]) ||  explode("data:image/jpeg", $image_parts[0]) ||  explode("data:image/jpg", $image_parts[0]) ||  explode("data:image/svg", $image_parts[0]);
-        $image_base64 = base64_decode($image_parts[1], true);
-        $fileName =  uniqid() . '.' . pathinfo($image_parts[0], PATHINFO_EXTENSION);
-        $image_base64 = base64_decode($image_parts[1], true);
-        $fileName =  uniqid() . '.png';
-        $file = $folderPath .  $fileName;
-        //  $mainfile =
-        Storage::put($file, $image_base64);
-        // $items->titleImageurl = $mainfile;
-
-
         $loaditem = $item->adsimages()->create([
-            'itemadsimagesurls' => $file
+            'itemadsimagesurls' =>   $filetitleimage
             // $request->itemadsimagesurls
         ]);
         if (auth('sanctum')->check()) {
