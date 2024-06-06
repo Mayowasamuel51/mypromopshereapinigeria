@@ -279,7 +279,7 @@ class HomePageController extends Controller
             return response()->json([
                 'status' => 200,
                 'normalads'  =>  $fetch_images,
-                // 'other_images' => $adimages_data
+                'other_images' => $adimages_data
                 // $fetch_details
             ]);
         }
