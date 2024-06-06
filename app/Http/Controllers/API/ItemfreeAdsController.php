@@ -39,16 +39,16 @@ class ItemfreeAdsController extends Controller
         $filetitleimage = $request->itemadsimagesurls;
         $folderPath = "public/";
         $image_parts = explode(";base64,",  $filetitleimage);
-        $image_type_aux = explode("data:image/png", $image_parts[0]) ||  explode("data:image/jpeg", $image_parts[0]) ||  explode("data:image/jpg", $image_parts[0]) ||  explode("data:image/svg", $image_parts[0]) ;  
+        $image_type_aux = explode("data:image/png", $image_parts[0]) ||  explode("data:image/jpeg", $image_parts[0]) ||  explode("data:image/jpg", $image_parts[0]) ||  explode("data:image/svg", $image_parts[0]);
         $image_base64 = base64_decode($image_parts[1], true);
         $fileName =  uniqid() . '.' . pathinfo($image_parts[0], PATHINFO_EXTENSION);
         $image_base64 = base64_decode($image_parts[1], true);
         $fileName =  uniqid() . '.png';
         $file = $folderPath .  $fileName;
         //  $mainfile =
-         Storage::put($file,$image_base64);
+        Storage::put($file, $image_base64);
         // $items->titleImageurl = $mainfile;
-      
+
 
         $loaditem = $item->adsimages()->create([
             'itemadsimagesurls' => $file
@@ -108,16 +108,46 @@ class ItemfreeAdsController extends Controller
                 $items->headlines = $request->headlines;
                 $items->itemadsid = rand(999297, 45543);
                 $items->usedOrnew = $request->usedOrnew;
-                $items->user_image =$request->user_image;
-                $items->discount =$request->discount;
+                $items->user_image = $request->user_image;
+                $items->discount = $request->discount;
+
 
                 $filetitleimage = $request->file('titleImageurl');
                 $folderPath = "public/";
                 $fileName =  uniqid() . '.png';
                 $file = $folderPath;
                 $mainfile =    Storage::put($file, $filetitleimage);
-                $items->titleImageurl = $mainfile;         
+                $items->titleImageurl = $mainfile;
+
+
+
+                // if ($request->hasFile('titleImageurl')) {
+                //     $fileTitleImage = $request->file('titleImageurl');
+                //     $folderPath = "public/";
+                //     $fileName = uniqid() . '.png';
+                //     $filePath = $folderPath ;
+                //     // . $fileName;
+
+                //     // Save the file to the specified path
+                //     $storedFile = Storage::put($filePath, file_get_contents($fileTitleImage));
+
+                //     // Check if the file was successfully stored
+                //     if ($storedFile) {
+                //         $items->titleImageurl = $storedFile;
+                //     } else {
+                //         // Handle the error if the file was not stored
+                //         // You can throw an exception or return an error response
+                //         throw new \Exception('File upload failed');
+                //     }
+                // }
+
                 $items->save();
+                // $folderPath = "public/";
+                // $fileName =  uniqid() . '.png';
+                // $file = $folderPath;
+                // $mainfile =    Storage::put($file, $filetitleimage);
+                // $items->titleImageurl = $mainfile;         
+                // $items->save();
                 if (
                     $items
                     // &&
