@@ -38,10 +38,10 @@ return [
     ],
     // algolia
 
-    // 'algolia' => [
-    //     'client_id' => env('Application_Id'),
-    //     'client_secret' => env('API_key'),
-    //     'redirect' => env('Search_API_Key'),
-    // ],
+    'algolia' => [
+        'client_id' => env('Application_Id'),
+        'client_secret' => env('API_key'),
+        'redirect' => env('Search_API_Key'),
+    ],
 
 ];
