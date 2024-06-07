@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,23 +14,28 @@ use App\Traits\HttpResponse;
 use GuzzleHttp\Exception\ClientException;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 use Illuminate\Http\JsonResponse;
-class AuthController extends Controller{
-  
+use Illuminate\Support\Facades\Log;
+
+class AuthController extends Controller
+{
+
     //
     //  public function __construct(){
     //     $this->middleware('auth:sanctum')
     //     ->except(['sighup','login']);
     // }
     use HttpResponse;
-    public function redirectToAuth(): JsonResponse  {
+    public function redirectToAuth(): JsonResponse
+    {
         return response()->json([
             'url' => Socialite::driver('google')
-                         ->stateless()
-                         ->redirect()
-                         ->getTargetUrl(),
+                ->stateless()
+                ->redirect()
+                ->getTargetUrl(),
         ]);
     }
-    public function handleAuthCallback(): JsonResponse  {
+    public function handleAuthCallback(): JsonResponse
+    {
         try {
             /** @var SocialiteUser $socialiteUser */
             $socialiteUser = Socialite::driver('google')->stateless()->user();
@@ -39,27 +45,27 @@ class AuthController extends Controller{
 
         /** @var User $user */
         $user =  User::updateOrCreate(
-                [
-                    'email' => $socialiteUser->email,
-                ],
-                [
-                    'email_verified_at' => now(),
-                    'name' => $socialiteUser->name,
-                    'google_id' => $socialiteUser->id,
-                    'avatar' => $socialiteUser->avatar,
-                    'current_plan'=>"free_plan", 
-                    'id_number'=> rand(1222,45543),
-                    'password' => $socialiteUser->password,
-                ]
-            );
-            // Auth::login($user);
-        $token=$user->createToken('google-token'.$user->name)->plainTextToken;
+            [
+                'email' => $socialiteUser->email,
+            ],
+            [
+                'email_verified_at' => now(),
+                'name' => $socialiteUser->name,
+                'google_id' => $socialiteUser->id,
+                'avatar' => $socialiteUser->avatar,
+                'current_plan' => "free_plan",
+                'id_number' => rand(1222, 45543),
+                'password' => $socialiteUser->password,
+            ]
+        );
+        // Auth::login($user);
+        $token = $user->createToken('google-token' . $user->name)->plainTextToken;
         return response()->json([
-            'token'=>$token,
-            'profileImage'=>$user->profileImage,
-            'user'=>$user->email,
-            'user-name'=>$user->name,
-            'id'=>$user->id,
+            'token' => $token,
+            'profileImage' => $user->profileImage,
+            'user' => $user->email,
+            'user-name' => $user->name,
+            'id' => $user->id,
             'users' => $user,
             // 'token' => $user->createToken('google-token'.$user->name)->plainTextToken,
             // 'token_type' => 'Bearer',
@@ -70,17 +76,18 @@ class AuthController extends Controller{
 
 
 
-    public function  getInfo(){
+    public function  getInfo()
+    {
         // get user info base on token to show for 
         $user = Auth::user();
-        if(!$user){
+        if (!$user) {
             return response()->json([
                 'status' => 401,
                 'message' => 'You are not unauthenticated Procced to login or register '
             ]);
         }
-        $info = User::where('id',$user->id)->get();
-        if(!$info){
+        $info = User::where('id', $user->id)->get();
+        if (!$info) {
             return response()->json([
                 'status' => 401,
                 'message' => 'You are not unauthenticated Procced to login or register '
@@ -90,7 +97,6 @@ class AuthController extends Controller{
             'status' => 20,
             'message' => $info
         ]);
-
     }
     public function sighup(Request $request)
     {
@@ -109,11 +115,11 @@ class AuthController extends Controller{
             $createuser  =  User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'current_plan'=>"free_plan", 
-                'id_number'=> rand(1222,45543),
-                'password' => Hash::make('password', [$request->password] )
+                'current_plan' => "free_plan",
+                'id_number' => rand(1222, 45543),
+                'password' => Hash::make($request->password)
             ]);
-            $token = $createuser->createToken("API-TOKEN".$createuser->email)->plainTextToken;
+            $token = $createuser->createToken("API-TOKEN" . $createuser->email)->plainTextToken;
             return response()->json([
                 'token' => $token,
                 'status' => 201,
@@ -123,37 +129,55 @@ class AuthController extends Controller{
     }
 
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         /// this is not working well .still need to fix need to checking of passwords
+        // $request->validate([
+        //     'email' => 'required',
+        //     'password' => 'required'
+        // ]);
         $request->validate([
-            'email'=>'required',
-            'password'=>'required'
-        ]);
-        $user = User::where('email', $request->email)->first();
-        if(!$user  && Hash::check($request->password, $user->password)){
-            throw ValidationException::withMessages([
-                'email'=>['email not correct']
-            ], 401);
-        }
-        // if(Hash::check($request->password, $user->password)){
-        //     throw ValidationException::withMessages([
-        //         'email'=>['email not correct or password']
-        //     ], 422);
-        // }
-        $token=  $user->createToken("API-TOKEN".$user->email)->plainTextToken;
-        return response()->json([
-            'token'=>$token,
-            'profileImage'=>$user->profileImage,
-            'user'=>$user->email,
-            'user_phone'=>$user->user_phone,
-            'user_website'=>$user->websiteName,
-            'user-name'=>$user->name,
-            'id'=>$user->id
+            'email' => 'required|string',
+            'password' => 'required|string'
         ]);
 
+        $user = User::where('email', $request->email)->first();
+        // if(!Auth::attempt($request->only(['email'=>$request->email ,
+        // 'password'=>Hash::check($request->password, $user->password)]))){
+        //     return  response()->json([ 
+        //     "inviad users or worng password"=> 422]);
+        // }
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['email or password is not correct']
+            ], 401);
+        } else {
+            // if (!$user ||  !Hash::check($request->password, $user->password)) {
+            //     return response()->json([
+            //         'status' => 422,
+            //         'dum'=>$user->email ,
+            //         'pass'=> $user->password,
+            //         'message' => 'invaild credentials'
+            //     ]);
+            // }
+            //  else {
+            $token =  $user->createToken("API-TOKEN" . $user->email)->plainTextToken;
+            return response()->json([
+                'status' => 200,
+                'token' => $token,
+                'profileImage' => $user->profileImage,
+                'backgroundimage' => $user->backgroundimage,
+                'user' => $user->email,
+                'user_phone' => $user->user_phone,
+                'user_website' => $user->websiteName,
+                'user-name' => $user->name,
+                'id' => $user->id
+            ]);
+        }
     }
 
-      public function logout(Request $request)   {
+    public function logout(Request $request)
+    {
         /** @var User $user */
         $request->user()->tokens()->delete();
         return  response()->json([
@@ -167,4 +191,15 @@ class AuthController extends Controller{
         //     return  response()->json([ 
         //     "inviad users or worng password"=> 422]);
         // }
-        // $user = User::where('email', $request->email)->first();
+        // $user = User::where('email', $request->email)->first(); // 
+        // if(!$user  && Hash::check($request->password, $user->password)){
+        //     throw ValidationException::withMessages([
+        //         'email'=>['email not correct']
+        //     ], 401);
+        // }
+
+        // if(Hash::check($request->password, $user->password)){
+        //     throw ValidationException::withMessages([
+        //         'email'=>['email not correct or password']
+        //     ], 422);
+        // }

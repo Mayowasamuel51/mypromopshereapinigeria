@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('name')->nullable();
+            $table->string('backgroundimage')->nullable();
             $table->string('google_id')->nullable();
             $table->string('user_phone')->nullable();
             $table->integer("freetimes") ->default('0')->nullable();

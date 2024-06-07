@@ -16,6 +16,12 @@ Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
 
 
 
+// Public Api for login and Sighup 
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/sighup', [AuthController::class, 'sighup']);
+Route::post('/logout', [AuthController::class, 'logout']);
+
+
 Route::middleware('auth:sanctum')->group(function () {
     // get User info route 
     Route::get('/getuser', [AuthController::class, 'getInfo']);
@@ -27,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //update user information from setting page .............................................
     Route::put('/user/settings/{iduser}', [UserController::class, 'updateuserinfo']);
+    Route::put('/user/settings/background/{iduser}', [UserController::class, 'updatebackgroundimage']);
       //get user profile details 
     Route::get('/getuser/{id}', [UserController::class, 'settings']);
    
@@ -42,14 +49,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/normalads', [ItemsAdsController::class, 'ItemsAdsStore']);
 });
 
-
-// Public Api for login and Sighup 
-Route::post('/sighup', [AuthController::class, 'sighup']);
-
-Route::post('/login', [AuthController::class, 'login']);
-
-Route::post('/logout', [AuthController::class, 'logout']);
-
 // Homepage search side 
 Route::get('/search/{query}',[HomePageController::class, 'searchapi']);
 
@@ -57,7 +56,6 @@ Route::get('/search/{query}',[HomePageController::class, 'searchapi']);
 Route::get('/trendingads', [HomePageController::class, 'generalTrending']);
 // get id 
 Route::get('/trendingads/{id}', [HomePageController::class, 'generalTrendingPage']);
-
 
 // Top level 
 Route::get('/toplevel', [HomePageController::class, 'toplevelads']);
@@ -77,7 +75,7 @@ Route::get('/trendingadsvideos/{id}', [HomePageController::class, 'generalTopVid
 
 
 // User click  profile Api   ..see other this be the users
-Route::get('/profilecheck/{id}', [UserController::class, 'profileData']);
+Route::get('/useruploads/{id}', [UserController::class, 'profileData']);
 Route::get('/profile/{id}', [UserController::class, 'Userprofile']);
 
 

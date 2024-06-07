@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HomePageControllerResource;
+use App\Http\Resources\HomeVideoResource;
 use App\Models\ItemfreeAds;
+use App\Models\ItemfreeVideosAds;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -69,12 +71,46 @@ class UserController extends Controller{
                 $user_infomation = User::findOrFail($iduser);
                 if ($user_infomation) {
                     // $user_infomation->name = $request->names;
-                    $user_infomation->profileImage =   $request->profileImage;
                     // $user_infomation->id = auth()->user()->id;
+
+                    $user_infomation->profileImage =   $request->profileImage;
+                 
                     $user_infomation->websiteName = $request->websiteName;
                     $user_infomation->messageCompany = $request->messageCompany;
                     $user_infomation->aboutMe = $request->aboutMe;
                     $user_infomation->brandName = $request->brandName;
+               
+                    $user_infomation->save(); 
+                    // return response()->json([
+                    //     'status'=>200,
+                    //     'updated' => $user_infomation
+                    // ]);
+                    return response()->json([
+                        'status' => 200,
+                        'updated' => $user_infomation
+                    ]);
+                }
+
+            }
+        }
+    }
+
+    public function updatebackgroundimage(Request $request, $iduser){
+        $validator = Validator::make($request->all(), [
+            // 'profileImage' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->messages(),
+            ]);
+        } else {
+            $all_data = $request->all();
+            if (auth('sanctum')->check()) {
+                $user_infomation = User::findOrFail($iduser);
+                if ($user_infomation) {
+                 
+                    $user_infomation->backgroundimage= $request->backgroundimage;
                     $user_infomation->save(); 
                     // return response()->json([
                     //     'status'=>200,
@@ -104,19 +140,20 @@ class UserController extends Controller{
 
     public function profileData($id){
         // $user = User::where('id',$id)->get();
-        $user_infomation =     HomePageControllerResource::collection( ItemfreeAds::where('user_id',$id)->get());
-        if( $user_infomation ->isEmpty()){
+        $user_infomation =     HomePageControllerResource::collection(ItemfreeAds::where('user_id',$id)->get());
+        $user_videos =  HomeVideoResource::collection(ItemfreeVideosAds::where('id', $id)->get());
+        if( $user_infomation ->isEmpty()   ||   $user_videos->isEmpty()){
             return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
             ], 404);
         }
         //show the user uploads in the past in a nice format 
-      
         // $user_infomation->itemuserimages()->where('user_id',$id)->get();
         return response()->json([
             'status' => 200,
-            'data' => $user_infomation
+            'ads' => $user_infomation,
+            'videos'=>$user_videos
         ], 200);
 
     }
