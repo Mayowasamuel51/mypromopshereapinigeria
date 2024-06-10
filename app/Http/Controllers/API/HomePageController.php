@@ -264,11 +264,11 @@ class HomePageController extends Controller
                     ->whereIn('itemfree_ads.categories', $categories)
                     ->inRandomOrder()
                     // ->paginate(8)
+                    ->limit(1000)
                     ->get()
             );
 
-        $fetch_details  =  DB::table('ads_images')
-            ->join('itemfree_ads', function (JoinClause $join) {
+        $fetch_details  =  DB::table('ads_images')      ->join('itemfree_ads', function (JoinClause $join) {
                 $join->on('ads_images.itemfree_ads_id', '=', 'itemfree_ads.id');
             })
             ->inRandomOrder()
@@ -513,6 +513,46 @@ class HomePageController extends Controller
             'Kids_Baby_dresses'=>  $Kids_Baby_dresses
         ]);
     }
+
+
+    public function  Property(){
+        $Property = DB::table('itemfree_ads')
+        // ->where('discount','yes')
+        ->where('itemfree_ads.categories', 'Property')
+        ->inRandomOrder()
+        ->limit(40)->get();
+        if (  $Property->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'property'=>  $Property
+        ]);
+    }
+
+    // Luxury-apartment
+
+    public function Luxury_apartment(){
+         $Luxury_apartments = DB::table('itemfree_ads')
+        // ->where('discount','yes')
+        ->where('itemfree_ads.categories', 'Luxury-apartment')
+        ->inRandomOrder()
+        ->limit(40)->get();
+        if (   $Luxury_apartments->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'Luxury-apartment'=>   $Luxury_apartments
+        ]);   
+    }
+
     public function trendingads()
     {
     }

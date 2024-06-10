@@ -54,7 +54,6 @@ Route::get('/search/{query}',[HomePageController::class, 'searchapi']);
 
 //  Trending Ads Api 
 Route::get('/trendingads', [HomePageController::class, 'generalTrending']);
-// get id 
 Route::get('/trendingads/{id}', [HomePageController::class, 'generalTrendingPage']);
 
 // Top level 
@@ -68,6 +67,14 @@ Route::get('/discount', [HomePageController::class, 'Discount']);
 // baby Link
 Route::get('/Kids_Baby_dresses',[HomePageController::class , 'baby']);
 // Route::get('/Kids_Baby_dresses',[HomePageController::class , 'baby']);
+
+//property Api 
+Route::get('/property',[HomePageController::class , 'Property']);
+// Route::get('/Kids_Baby_dresses',[HomePageController::class , 'baby']);
+
+// Luxury-apartment api 
+Route::get('/luxuryapartment',[HomePageController::class , 'Luxury_apartment']);
+
 
 // Top videoes Ads 
 Route::get('/trendingadsvideos', [HomePageController::class, 'generalTopVideos']);

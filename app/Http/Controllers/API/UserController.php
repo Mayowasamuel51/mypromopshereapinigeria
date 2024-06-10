@@ -109,7 +109,6 @@ class UserController extends Controller{
             if (auth('sanctum')->check()) {
                 $user_infomation = User::findOrFail($iduser);
                 if ($user_infomation) {
-                 
                     $user_infomation->backgroundimage= $request->backgroundimage;
                     $user_infomation->save(); 
                     // return response()->json([

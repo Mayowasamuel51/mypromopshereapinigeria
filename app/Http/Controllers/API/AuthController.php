@@ -142,11 +142,6 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
-        // if(!Auth::attempt($request->only(['email'=>$request->email ,
-        // 'password'=>Hash::check($request->password, $user->password)]))){
-        //     return  response()->json([ 
-        //     "inviad users or worng password"=> 422]);
-        // }
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['email or password is not correct']
