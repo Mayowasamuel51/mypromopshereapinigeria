@@ -480,8 +480,8 @@ class HomePageController extends Controller
         $discount_options = DB::table('itemfree_ads')
         ->where('discount','Yes')
         ->orWhere('itemfree_ads.categories', $categories)
-        // ->inRandomOrder()
-        // ->limit(50)
+        ->inRandomOrder()
+        ->limit(50)
         ->get();
         if ( $discount_options->isEmpty()) {
             return response()->json([
