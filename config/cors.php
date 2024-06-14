@@ -21,9 +21,9 @@ return [
 
     // 'allowed_origins' => ['https://www.mypromosphere.com'],
 
-    'allowed_origins' => ['http://localhost:3000'],
+    // 'allowed_origins' => ['http://localhost:3000'],
   
-    // 'allowed_origins' => ['https://mypromospherefrontend.vercel.app'],
+    'allowed_origins' => ['https://mypromospherefrontend.vercel.app'],
 
     'allowed_origins_patterns' => [],
 
