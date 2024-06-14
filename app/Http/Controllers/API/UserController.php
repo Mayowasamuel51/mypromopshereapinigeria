@@ -55,8 +55,7 @@ class UserController extends Controller{
                     'posts'=>$userUploadsVideo
                 ]);
     }
-    public function updateuserinfo(Request $request, $iduser)
-    {
+    public function updateuserinfo(Request $request, $iduser){
         $validator = Validator::make($request->all(), [
             // 'profileImage' => 'required',
         ]);
@@ -72,15 +71,14 @@ class UserController extends Controller{
                 if ($user_infomation) {
                     // $user_infomation->name = $request->names;
                     // $user_infomation->id = auth()->user()->id;
-
-                    $user_infomation->profileImage =   $request->profileImage;
-                 
+                    $user_infomation->profileImage =   $request->profileImage;    
                     $user_infomation->websiteName = $request->websiteName;
                     $user_infomation->messageCompany = $request->messageCompany;
                     $user_infomation->aboutMe = $request->aboutMe;
                     $user_infomation->brandName = $request->brandName;
                
                     $user_infomation->save(); 
+                    
                     // return response()->json([
                     //     'status'=>200,
                     //     'updated' => $user_infomation
@@ -109,12 +107,8 @@ class UserController extends Controller{
             if (auth('sanctum')->check()) {
                 $user_infomation = User::findOrFail($iduser);
                 if ($user_infomation) {
-                    $user_infomation->backgroundimage= $request->backgroundimage;
-                    $user_infomation->save(); 
-                    // return response()->json([
-                    //     'status'=>200,
-                    //     'updated' => $user_infomation
-                    // ]);
+                    $user_infomation->backgroundimage = $request->backgroundimage;
+                    $user_infomation->save();     
                     return response()->json([
                         'status' => 200,
                         'updated' => $user_infomation
@@ -172,6 +166,23 @@ class UserController extends Controller{
         ], 200);
 
     }
+
+
+
+    public function profileEdit($iduser){
+        // get users infomation 
+        if (auth('sanctum')->check()) {
+            $user_infomation = User::findOrFail($iduser);
+            if ($user_infomation) {
+                return response()->json([
+                    'status' => 200,
+                    'info' => $user_infomation
+                ]);
+            }
+        }
+
+    }
+
 }
 
 
@@ -188,3 +199,7 @@ class UserController extends Controller{
                 // $user_infomation->profileImage = $request->profi
                 // $user_infomation->password
                 // $user_infomation->id = $user_auth;
+                    // return response()->json([
+                    //     'status'=>200,
+                    //     'updated' => $user_infomation
+                    // ]);

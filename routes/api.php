@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //update user information from setting page .............................................
     Route::put('/user/settings/{iduser}', [UserController::class, 'updateuserinfo']);
     Route::put('/user/settings/background/{iduser}', [UserController::class, 'updatebackgroundimage']);
+    Route::get('/user/info/{iduser}', [UserController::class, 'profileEdit']);
       //get user profile details 
     Route::get('/getuser/{id}', [UserController::class, 'settings']);
    

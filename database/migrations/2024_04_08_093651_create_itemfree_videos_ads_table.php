@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string("user_website")->nullable();
             $table->integer("freetimes") ->default('0')->nullable();
             $table->string("titlevideourl")->nullable();
+            $table->string('thumbnails')->nullable();
             $table->integer("price_range")->nullable();
             $table->string("discount")->nullable();
             $table->string("usedOrnew")->nullable();

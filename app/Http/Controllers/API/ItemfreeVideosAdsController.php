@@ -9,7 +9,7 @@ use App\Models\ItemsAds;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Storage;
 class ItemfreeVideosAdsController extends Controller
 {
     //
@@ -37,6 +37,12 @@ class ItemfreeVideosAdsController extends Controller
                     ]);
                 }
                 $value = 1;
+                
+                $filetitleimage = $request->file('thumbnails');
+                $folderPath = "thumbnails/";
+                $fileName =  uniqid() . '.png';
+                $file = $folderPath;
+                $mainfile =    Storage::put($file, $filetitleimage);
                 $items  = ItemfreeVideosAds::create([
                     "user_id" => auth()->user()->id,
                     'categories' => $request->categories,
@@ -46,6 +52,7 @@ class ItemfreeVideosAdsController extends Controller
                     'local_gov' => $request->local_gov,
                     'headlines' => $request->headlines,
                     'itemadsid' => rand(999297, 45543),
+                    'thumbnails'=>$mainfile,
                     'usedOrnew' => $request->usedOrnew,
                     'titlevideourl' => $request->titlevideourl,
                     // 'freetimes'=>$value

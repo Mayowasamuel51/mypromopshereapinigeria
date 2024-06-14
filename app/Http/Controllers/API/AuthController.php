@@ -164,8 +164,10 @@ class AuthController extends Controller
                 'backgroundimage' => $user->backgroundimage,
                 'user' => $user->email,
                 'user_phone' => $user->user_phone,
-                'user_website' => $user->websiteName,
+                'websiteName' => $user->websiteName,
                 'user-name' => $user->name,
+                'aboutMe'=>$user->aboutMe,
+                'brandName' => $user->brandName,
                 'id' => $user->id
             ]);
         }
