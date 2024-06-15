@@ -299,17 +299,20 @@ class HomePageController extends Controller
         $fetch_details  = ItemfreeAds::find($id);
         $fetch_details->adsimages()->where('itemfree_ads_id', $id)->get();
         $fetch_details_others  =  ItemfreeAds::find($id)->adsimages()->where('itemfree_ads_id', $id)->inRandomOrder()->get();
-        if ($fetch_details->isEmpty()   || $fetch_details_others->isEmpty()  ) {
+        if($fetch_details) {
+            return response()->json([
+                'status' => 200,
+                'data' => $fetch_details,
+                'other_data' => $fetch_details_others
+            ]);
+        }
+        // if ($fetch_details->isEmpty()   || $fetch_details_others->isEmpty()  ) {
             return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
             ], 404);
-        }
-        return response()->json([
-            'status' => 200,
-            'data' => $fetch_details,
-            'other_data' => $fetch_details_others
-        ]);
+        // }
+     
     }
 
     public function generalTopVideos()
