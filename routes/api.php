@@ -73,10 +73,10 @@ Route::get('/property',[HomePageController::class , 'Property']);
 // Luxury-apartment api 
 Route::get('/luxuryapartment',[HomePageController::class , 'Luxury_apartment']);
 
-//Laptops data
+//Laptops data api 
 Route::get('/laptops',[HomePageController::class , 'Laptops']);
-
-//Cars
+  
+//Cars data api 
 Route::get('/cars',[HomePageController::class , 'Cars']);
 
 // Top videoes Ads 

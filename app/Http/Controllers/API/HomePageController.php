@@ -268,9 +268,9 @@ class HomePageController extends Controller
                     ->get()
             );
 
-        $fetch_details  =  DB::table('ads_images')      ->join('itemfree_ads', function (JoinClause $join) {
-                $join->on('ads_images.itemfree_ads_id', '=', 'itemfree_ads.id');
-            })
+        $fetch_details  =  DB::table('ads_images')->join('itemfree_ads', function (JoinClause $join) {
+            $join->on('ads_images.itemfree_ads_id', '=', 'itemfree_ads.id');
+        })
             ->inRandomOrder()
             ->get();
         $adimages_data = AdsImagesResource::collection(AdsImages::all());
@@ -295,22 +295,21 @@ class HomePageController extends Controller
     public function generalTrendingPage($id)
     {
         // join the itemfreead and adimages , so when user clicks on one post it show remaining information of that post 
+        /// we neeed to cahce this  funciton becos of lot of Load
         $fetch_details  = ItemfreeAds::find($id);
         $fetch_details->adsimages()->where('itemfree_ads_id', $id)->get();
-
         $fetch_details_others  =  ItemfreeAds::find($id)->adsimages()->where('itemfree_ads_id', $id)->inRandomOrder()->get();
-        if ($fetch_details) {
-            return response()->json([
-                'status' => 200,
-                'data' => $fetch_details,
-                'other_data' => $fetch_details_others
-            ]);
-        } else {
+        if ($fetch_details->isEmpty()   || $fetch_details_others->isEmpty()  ) {
             return response()->json([
                 'status' => 404,
-                'data' => "no data found"
-            ]);
+                'message' => 'No orders found matching the query.'
+            ], 404);
         }
+        return response()->json([
+            'status' => 200,
+            'data' => $fetch_details,
+            'other_data' => $fetch_details_others
+        ]);
     }
 
     public function generalTopVideos()
@@ -384,13 +383,14 @@ class HomePageController extends Controller
         ]);
     }
 
-    public function generalTopVideosPage($id){
+    public function generalTopVideosPage($id)
+    {
         $fetch_details  =  HomeVideoResource::collection(ItemfreeVideosAds::where('id', $id)->get());
         if ($fetch_details->isEmpty()) {
             return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
-            ], 404); 
+            ], 404);
         }
         return response()->json([
             'status' => 200,
@@ -398,7 +398,8 @@ class HomePageController extends Controller
         ]);
     }
 
-    public function toplevelads(){
+    public function toplevelads()
+    {
         // this top level function will be for showing different categories that hasnt showing in the trending part 
         /// also we be changing to video part some times 
         // also this will be showing dicount price 
@@ -448,7 +449,8 @@ class HomePageController extends Controller
         ]);
     }
 
-    public function  Discount(){
+    public function  Discount()
+    {
         // this is discount option will be a navbar option on the home-page
         $categories = [
             "Laptops",
@@ -478,12 +480,12 @@ class HomePageController extends Controller
             "Sport Dresses"
         ];
         $discount_options = DB::table('itemfree_ads')
-        ->where('discount','Yes')
-        ->orWhere('itemfree_ads.categories', $categories)
-        ->inRandomOrder()
-        ->limit(50)
-        ->get();
-        if ( $discount_options->isEmpty()) {
+            ->where('discount', 'Yes')
+            ->orWhere('itemfree_ads.categories', $categories)
+            ->inRandomOrder()
+            ->limit(50)
+            ->get();
+        if ($discount_options->isEmpty()) {
             return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
@@ -491,18 +493,19 @@ class HomePageController extends Controller
         }
         return response()->json([
             'status' => 200,
-            'discount'=>$discount_options
+            'discount' => $discount_options
         ]);
     }
 
-    
-    public function  baby(){
+
+    public function  baby()
+    {
         $Kids_Baby_dresses = DB::table('itemfree_ads')
-        ->where('discount','yes')
-        ->where('itemfree_ads.categories', 'Kids , Baby dresses')
-        ->inRandomOrder()
-        ->limit(40)->get();
-        if (  $Kids_Baby_dresses->isEmpty()) {
+            ->where('discount', 'yes')
+            ->where('itemfree_ads.categories', 'Kids , Baby dresses')
+            ->inRandomOrder()
+            ->limit(40)->get();
+        if ($Kids_Baby_dresses->isEmpty()) {
             return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
@@ -510,18 +513,19 @@ class HomePageController extends Controller
         }
         return response()->json([
             'status' => 200,
-            'Kids_Baby_dresses'=>  $Kids_Baby_dresses
+            'Kids_Baby_dresses' =>  $Kids_Baby_dresses
         ]);
     }
 
 
-    public function  Property(){
+    public function  Property()
+    {
         $Property = DB::table('itemfree_ads')
-        // ->where('discount','yes')
-        ->where('itemfree_ads.categories', 'Property')
-        ->inRandomOrder()
-        ->limit(40)->get();
-        if (  $Property->isEmpty()) {
+            // ->where('discount','yes')
+            ->where('itemfree_ads.categories', 'Property')
+            ->inRandomOrder()
+            ->limit(40)->get();
+        if ($Property->isEmpty()) {
             return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
@@ -529,19 +533,20 @@ class HomePageController extends Controller
         }
         return response()->json([
             'status' => 200,
-            'property'=>  $Property
+            'property' =>  $Property
         ]);
     }
 
     // Luxury-apartment
 
-    public function Luxury_apartment(){
-         $Luxury_apartments = DB::table('itemfree_ads')
-        // ->where('discount','yes')
-        ->where('itemfree_ads.categories', 'Luxury-apartment')
-        ->inRandomOrder()
-        ->limit(40)->get();
-        if (   $Luxury_apartments->isEmpty()) {
+    public function Luxury_apartment()
+    {
+        $Luxury_apartments = DB::table('itemfree_ads')
+            // ->where('discount','yes')
+            ->where('itemfree_ads.categories', 'Luxury-apartment')
+            ->inRandomOrder()
+            ->limit(40)->get();
+        if ($Luxury_apartments->isEmpty()) {
             return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
@@ -549,45 +554,47 @@ class HomePageController extends Controller
         }
         return response()->json([
             'status' => 200,
-            'Luxury-apartment'=>   $Luxury_apartments
-        ]);   
+            'Luxury-apartment' =>   $Luxury_apartments
+        ]);
     }
 
-    public function Laptops(){
+    public function Laptops()
+    {
         $laptopsdata = DB::table('itemfree_ads')
-       // ->where('discount','yes')
-       ->where('itemfree_ads.categories', 'Laptops')
-       ->inRandomOrder()
-       ->limit(20)->get();
-       if (   $laptopsdata->isEmpty()) {
-           return response()->json([
-               'status' => 404,
-               'message' => 'No orders found matching the query.'
-           ], 404);
-       }
-       return response()->json([
-           'status' => 200,
-           'data'=>   $laptopsdata
-       ]);   
-   }
+            // ->where('discount','yes')
+            ->where('itemfree_ads.categories', 'Laptops')
+            ->inRandomOrder()
+            ->limit(20)->get();
+        if ($laptopsdata->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'data' =>   $laptopsdata
+        ]);
+    }
 
-   public function Cars(){
-    $cardata = DB::table('itemfree_ads')
-   // ->where('discount','yes')
-   ->where('itemfree_ads.categories', 'Automotive , Vehicles')
-   ->inRandomOrder()
-   ->limit(20)->get();
-   if (   $cardata->isEmpty()) {
-       return response()->json([
-           'status' => 404,
-           'message' => 'No orders found matching the query.'
-       ], 404);
-   }
-   return response()->json([
-       'status' => 200,
-       'data'=>   $cardata
-   ]);   
-}
+    public function Cars()
+    {
+        $cardata = DB::table('itemfree_ads')
+            // ->where('discount','yes')
+            ->where('itemfree_ads.categories', 'Automotive , Vehicles')
+            ->inRandomOrder()
+            ->limit(20)->get();
+        if ($cardata->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'data' =>   $cardata
+        ]);
+    }
 
     public function trendingads()
     {
