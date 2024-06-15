@@ -553,6 +553,24 @@ class HomePageController extends Controller
         ]);   
     }
 
+    public function Laptops(){
+        $laptopsdata = DB::table('itemfree_ads')
+       // ->where('discount','yes')
+       ->where('itemfree_ads.categories', 'Laptops')
+       ->inRandomOrder()
+       ->limit(20)->get();
+       if (   $laptopsdata->isEmpty()) {
+           return response()->json([
+               'status' => 404,
+               'message' => 'No orders found matching the query.'
+           ], 404);
+       }
+       return response()->json([
+           'status' => 200,
+           'data'=>   $laptopsdata
+       ]);   
+   }
+
     public function trendingads()
     {
     }

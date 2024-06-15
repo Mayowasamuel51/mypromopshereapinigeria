@@ -38,14 +38,11 @@ Route::middleware('auth:sanctum')->group(function () {
       //get user profile details 
     Route::get('/getuser/{id}', [UserController::class, 'settings']);
    
-
-
      // PersonalUploads for a user
      Route::get('/posts/{id}', [UserController::class, 'personalUploads']);
      Route::get('/postsvideos/{id}', [UserController::class, 'personalVideos']);
 
 
-     
     // Paid Ads 
     Route::post('/normalads', [ItemsAdsController::class, 'ItemsAdsStore']);
 });
@@ -76,6 +73,8 @@ Route::get('/property',[HomePageController::class , 'Property']);
 // Luxury-apartment api 
 Route::get('/luxuryapartment',[HomePageController::class , 'Luxury_apartment']);
 
+//Laptops data
+Route::get('/laptops',[HomePageController::class , 'Laptops']);
 
 // Top videoes Ads 
 Route::get('/trendingadsvideos', [HomePageController::class, 'generalTopVideos']);
@@ -98,6 +97,28 @@ Route::get(
     [HomePageController::class, 'categoriesapiSinglePages']
 );
 // 3) Personlized Ads Api 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
