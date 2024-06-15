@@ -131,11 +131,11 @@ class UserController extends Controller{
         }
     }
 
-    public function profileData($id){
+    public function profileUserPost($id){
         // $user = User::where('id',$id)->get();
-        $user_infomation =     HomePageControllerResource::collection(ItemfreeAds::where('user_id',$id)->get());
-        $user_videos =  HomeVideoResource::collection(ItemfreeVideosAds::where('id', $id)->get());
-        if( $user_infomation ->isEmpty()   ||   $user_videos->isEmpty()){
+        $user_infomation = HomePageControllerResource::collection(ItemfreeAds::where('user_id',$id)->get());
+       
+        if( $user_infomation ->isEmpty()  ){
             return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
@@ -146,9 +146,23 @@ class UserController extends Controller{
         return response()->json([
             'status' => 200,
             'ads' => $user_infomation,
-            'videos'=>$user_videos
+       
         ], 200);
 
+    }
+
+    public  function  profileUserVideo($id){
+          $user_videos =  HomeVideoResource::collection(ItemfreeVideosAds::where('id', $id)->get());
+          if( $user_videos->isEmpty()){
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'videos'=>$user_videos
+        ], 200);
     }
 
     public function Userprofile($id){
