@@ -76,6 +76,9 @@ Route::get('/luxuryapartment',[HomePageController::class , 'Luxury_apartment']);
 //Laptops data
 Route::get('/laptops',[HomePageController::class , 'Laptops']);
 
+//Cars
+Route::get('/cars',[HomePageController::class , 'Cars']);
+
 // Top videoes Ads 
 Route::get('/trendingadsvideos', [HomePageController::class, 'generalTopVideos']);
 Route::get('/trendingadsvideos/{id}', [HomePageController::class, 'generalTopVideosPage']);
