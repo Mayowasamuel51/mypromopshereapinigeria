@@ -39,7 +39,7 @@ class ItemfreeVideosAdsController extends Controller
                 $value = 1;
                 
                 $filetitleimage = $request->file('thumbnails');
-                $folderPath = "thumbnails/";
+                $folderPath = "public/thumbnails/";
                 $fileName =  uniqid() . '.png';
                 $file = $folderPath;
                 $mainfile =    Storage::put($file, $filetitleimage);
