@@ -374,16 +374,21 @@ class HomePageController extends Controller
                 ->inRandomOrder()
                 ->get()
         );
-        if ($fetch_top_videos->isEmpty()) {
+        if ($fetch_top_videos) {
             return response()->json([
+                'status' => 200,
+                'videos'  =>  $fetch_top_videos
+            ]);
+          
+        }
+          return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
             ], 404);
-        }
-        return response()->json([
-            'status' => 200,
-            'videos'  =>  $fetch_top_videos
-        ]);
+        // return response()->json([
+        //     'status' => 200,
+        //     'videos'  =>  $fetch_top_videos
+        // ]);
     }
 
     public function generalTopVideosPage($id)
