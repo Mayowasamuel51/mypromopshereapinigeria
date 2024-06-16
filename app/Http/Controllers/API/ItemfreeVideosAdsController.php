@@ -43,7 +43,7 @@ class ItemfreeVideosAdsController extends Controller
                 $fileName =  uniqid() . '.png';
                 $file = $folderPath;
                 $mainfile =    Storage::put($file, $filetitleimage);
-                $items  = ItemfreeVideosAds::create([
+            $items  = ItemfreeVideosAds::create([
                     "user_id" => auth()->user()->id,
                     'categories' => $request->categories,
                     'description' => $request->description,
