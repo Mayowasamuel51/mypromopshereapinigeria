@@ -16,6 +16,7 @@ class HomeVideoResource extends JsonResource
     {
         return [
             'id'=>$this->id,
+            'thumbnails'=>$this->thumbnails,
             'user_id'=>$this->user_id ,
             'titlevideourl'=>$this->titlevideourl,
             'user_image'=>$this->user_image,
