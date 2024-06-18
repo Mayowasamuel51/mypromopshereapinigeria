@@ -100,6 +100,8 @@ class ItemfreeAdsController extends Controller
                 $items->whatapp = $request->whatapp;
                 $items->aboutMe = $request->aboutMe;
                 $items->user_phone = $request->user_phone;
+                $items->user_name = $request->user_name;
+
 
 
                 $filetitleimage = $request->file('titleImageurl');

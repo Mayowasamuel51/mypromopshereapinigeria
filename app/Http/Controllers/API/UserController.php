@@ -180,7 +180,7 @@ class UserController extends Controller{
         }
         return response()->json([
             'status' => 200,
-            'data' =>  $user_information
+            'data' =>$user_information
         ], 200);
 
     }

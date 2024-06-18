@@ -167,7 +167,7 @@ class AuthController extends Controller
                 'user' => $user->email,
                 'user_phone' => $user->user_phone,
                 'websiteName' => $user->websiteName,
-                'user-name' => $user->name,
+                'user_name' => $user->name,
                 'aboutMe'=>$user->aboutMe,
                 'brandName' => $user->brandName,
                 'id' => $user->id
