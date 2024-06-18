@@ -171,11 +171,11 @@ class UserController extends Controller{
 
     public function Userprofile($id){
         // $user = User::where('id',$id)->get();
-        $user_information = User::where('id',$id)->get();
+        $user_information = User::where('name',$id)->get();  /// change the id to name
         if($user_information->isEmpty()){
             return response()->json([
                 'status' => 404,
-                'message' => 'No orders found matching the query.'
+                'message' => 'Sorry User does not exist '
             ], 404);
         }
         return response()->json([
