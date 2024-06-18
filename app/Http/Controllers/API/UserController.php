@@ -69,13 +69,17 @@ class UserController extends Controller{
             if (auth('sanctum')->check()) {
                 $user_infomation = User::findOrFail($iduser);
                 if ($user_infomation) {
-                    // $user_infomation->name = $request->names;
-                    // $user_infomation->id = auth()->user()->id;
+             
                     $user_infomation->profileImage =   $request->profileImage;    
+
                     $user_infomation->websiteName = $request->websiteName;
                     $user_infomation->messageCompany = $request->messageCompany;
+
                     $user_infomation->aboutMe = $request->aboutMe;
                     $user_infomation->brandName = $request->brandName;
+
+                    $user_infomation->whatapp= $request->whatapp;
+                    $user_infomation->user_phone = $request->user_phone;
                
                     $user_infomation->save(); 
                     

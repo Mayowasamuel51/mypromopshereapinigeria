@@ -97,9 +97,6 @@ class ItemfreeAdsController extends Controller
                 $items->usedOrnew = $request->usedOrnew;
                 $items->user_image = $request->user_image;
                 $items->discount = $request->discount;
-                $items->whatapp = $request->whatapp;
-                $items->aboutMe = $request->aboutMe;
-                $items->user_phone = $request->user_phone;
 
 
                 $filetitleimage = $request->file('titleImageurl');
@@ -132,7 +129,7 @@ class ItemfreeAdsController extends Controller
                 // }
 
                 $items->save();
-
+              
                 if (
                     $items
                     // &&

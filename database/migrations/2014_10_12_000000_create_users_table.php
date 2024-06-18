@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('backgroundimage')->nullable();
             $table->string('google_id')->nullable();
             $table->string('user_phone')->nullable();
+            $table->string('whatapp')->nullable();
             $table->integer("freetimes") ->default('0')->nullable();
             $table->string('date_buy_count')->integer()->nullable();
             $table->string('id_number')->nullable();

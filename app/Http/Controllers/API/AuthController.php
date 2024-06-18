@@ -160,6 +160,8 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 200,
                 'token' => $token,
+                'aboutMe'=>$user->aboutMe,
+                'whatapp'=>$user->whatapp,
                 'profileImage' => $user->profileImage,
                 'backgroundimage' => $user->backgroundimage,
                 'user' => $user->email,

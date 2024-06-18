@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string("user_image")->nullable();
             $table->string("user_name")->nullable();
             $table->string("user_phone")->nullable();
+            $table->string('whatapp')->nullable();
+            $table->string('aboutMe')->nullable();
             $table->string("user_website")->nullable();
             $table->integer("freetimes") ->default('0')->nullable();
             $table->string("titleImageurl")->nullable();
