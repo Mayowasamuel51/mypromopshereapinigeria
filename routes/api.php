@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/normalads', [ItemsAdsController::class, 'ItemsAdsStore']);
 });
 
+
 // Homepage search side 
 Route::get('/search/{query}',[HomePageController::class, 'searchapi']);
 

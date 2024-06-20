@@ -26,10 +26,8 @@ class HomePageController extends Controller
     }
 
 
-    public function searchapi($query)
-    {
-        $orders = HomePageControllerResource::collection(ItemfreeAds::with('user')
-            ->where('categories', 'LIKE', '%' . $query . '%')
+    public function searchapi($query) {
+        $orders = HomePageControllerResource::collection(  ItemfreeAds::with('user')      ->where('categories', 'LIKE', '%' . $query . '%')
             ->get());
         if ($orders->isEmpty()) {
             return response()->json([
@@ -289,7 +287,6 @@ class HomePageController extends Controller
             // 'local_gov' => $homepagerender_local_gov
         ]);
     }
-
 
 
     public function generalTrendingPage($id)

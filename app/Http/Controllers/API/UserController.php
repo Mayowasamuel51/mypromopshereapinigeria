@@ -136,8 +136,8 @@ class UserController extends Controller{
     }
 
     public function profileUserPost($id){
-        // $user = User::where('id',$id)->get();
-        $user_infomation = HomePageControllerResource::collection(ItemfreeAds::where('user_id',$id)->get());
+        // $user = User::where('id',$id)->get();  .i chnage the user_id to user_name 
+        $user_infomation = HomePageControllerResource::collection(ItemfreeAds::where('user_name',$id)->get());
        
         if( $user_infomation ->isEmpty()  ){
             return response()->json([
@@ -156,7 +156,7 @@ class UserController extends Controller{
     }
 
     public  function  profileUserVideo($id){
-          $user_videos =  HomeVideoResource::collection(ItemfreeVideosAds::where('id', $id)->get());
+          $user_videos =  HomeVideoResource::collection(ItemfreeVideosAds::where('user_name', $id)->get());
           if( $user_videos->isEmpty()){
             return response()->json([
                 'status' => 404,
