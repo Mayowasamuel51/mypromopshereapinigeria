@@ -87,9 +87,9 @@ Route::get('/trendingadsvideos/{id}', [HomePageController::class, 'generalTopVid
 
 
 // User click  profile Api   ..see other this be the users
-Route::get('/userpostsuploads/{id}', [UserController::class, 'profileUserPost']);
-Route::get('/uservideosuploads/{id}', [UserController::class, 'profileUserVideo']);
-Route::get('/profile/{id}', [UserController::class, 'Userprofile']);
+Route::get('/userpostsuploads/{user_name}', [UserController::class, 'profileUserPost']);
+Route::get('/uservideosuploads/{user_name}', [UserController::class, 'profileUserVideo']);
+Route::get('/profile/{user_name}', [UserController::class, 'Userprofile']);
 
 
 //   Home-page Public  api and other  public   apis for other pages 

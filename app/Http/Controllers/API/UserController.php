@@ -155,8 +155,8 @@ class UserController extends Controller{
 
     }
 
-    public  function  profileUserVideo($id){
-          $user_videos =  HomeVideoResource::collection(ItemfreeVideosAds::where('user_name', $id)->get());
+    public  function  profileUserVideo($user_name){
+          $user_videos =  HomeVideoResource::collection(ItemfreeVideosAds::where('user_name', $user_name)->get());
           if( $user_videos->isEmpty()){
             return response()->json([
                 'status' => 404,
@@ -169,9 +169,9 @@ class UserController extends Controller{
         ], 200);
     }
 
-    public function Userprofile($id){
-        // $user = User::where('id',$id)->get();
-        $user_information = User::where('name',$id)->get();  /// change the id to name
+    public function Userprofile($user_name){
+        // $user = User::where('id',$user_name)->get();
+        $user_information = User::where('name',$user_name)->get();  /// change the id to name
         if($user_information->isEmpty()){
             return response()->json([
                 'status' => 404,
