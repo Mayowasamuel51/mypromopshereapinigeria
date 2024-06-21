@@ -33,4 +33,8 @@ class ItemfreeAds extends Model
     public function adsimages(){
         return $this->hasMany(AdsImages::class);
     }
+
+    public function feedsback(){
+        return $this->hasMany(FeedBack::class);
+    }
 }

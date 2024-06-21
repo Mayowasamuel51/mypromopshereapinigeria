@@ -6,6 +6,7 @@ use App\Http\Controllers\API\ItemfreeAdsController;
 use App\Http\Controllers\API\ItemfreeVideosAdsController;
 use App\Http\Controllers\API\ItemsAdsController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\FeedBackController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -90,6 +91,18 @@ Route::get('/trendingadsvideos/{id}', [HomePageController::class, 'generalTopVid
 Route::get('/userpostsuploads/{user_name}', [UserController::class, 'profileUserPost']);
 Route::get('/uservideosuploads/{user_name}', [UserController::class, 'profileUserVideo']);
 Route::get('/profile/{user_name}', [UserController::class, 'Userprofile']);
+
+
+//feedback api 
+Route::post('/feedback/{itemid}', [FeedBackController::class, 'feedback']);
+Route::get('/feedback/{itemid}', [FeedBackController::class, 'getfeedback']);
+
+
+
+
+
+
+
 
 
 //   Home-page Public  api and other  public   apis for other pages 

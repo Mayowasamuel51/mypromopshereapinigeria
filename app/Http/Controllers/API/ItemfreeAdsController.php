@@ -94,15 +94,15 @@ class ItemfreeAdsController extends Controller
                 $items->local_gov = $request->local_gov;
                 $items->headlines = $request->headlines;
                 $items->itemadsid = rand(999297, 45543);
+                
                 $items->usedOrnew = $request->usedOrnew;
                 $items->user_image = $request->user_image;
                 $items->discount = $request->discount;
+
                 $items->whatapp = $request->whatapp;
                 $items->aboutMe = $request->aboutMe;
                 $items->user_phone = $request->user_phone;
                 $items->user_name = $request->user_name;
-
-
 
                 $filetitleimage = $request->file('titleImageurl');
                 $folderPath = "public/";

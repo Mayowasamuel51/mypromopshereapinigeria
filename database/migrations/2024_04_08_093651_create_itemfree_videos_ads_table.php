@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('itemfree_videos_ads', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->nullable();
             $table->string("user_image")->nullable();
             $table->string("user_name")->nullable();
             $table->string("user_phone")->nullable();

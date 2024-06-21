@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('ads_service_providers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->nullable();
             $table->string('industryType');
             $table->string('workexprience');
             $table->text('aboutyou');
