@@ -26,6 +26,8 @@ Route::post('/logout', [AuthController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function () {
     // get User info route 
     Route::get('/getuser', [AuthController::class, 'getInfo']);
+    //get user profile details 
+    Route::get('/getuser/{id}', [UserController::class, 'settings']);
     
     // free  Ads Routes  
     Route::post('/freeads', [ItemfreeAdsController::class, 'freeLimitedAds']);
@@ -37,8 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/settings/background/{iduser}', [UserController::class, 'updatebackgroundimage']);
     Route::get('/user/info/{iduser}', [UserController::class, 'profileEdit']);
     
-      //get user profile details 
-    Route::get('/getuser/{id}', [UserController::class, 'settings']);
+
    
      // PersonalUploads for a user
      Route::get('/posts/{id}', [UserController::class, 'personalUploads']);

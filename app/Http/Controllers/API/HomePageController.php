@@ -27,7 +27,7 @@ class HomePageController extends Controller
 
 
     public function searchapi($query) {
-        $orders = HomePageControllerResource::collection(  ItemfreeAds::with('user')      ->where('categories', 'LIKE', '%' . $query . '%')
+        $orders = HomePageControllerResource::collection( ItemfreeAds::with('user')->where('categories', 'LIKE', '%' . $query . '%')
             ->get());
         if ($orders->isEmpty()) {
             return response()->json([
@@ -490,15 +490,18 @@ class HomePageController extends Controller
             ->inRandomOrder()
             ->limit(50)
             ->get();
+        $adimages_data = AdsImagesResource::collection(AdsImages::all());
         if ($discount_options->isEmpty()) {
             return response()->json([
                 'status' => 404,
                 'message' => 'No orders found matching the query.'
             ], 404);
         }
+
         return response()->json([
             'status' => 200,
-            'discount' => $discount_options
+            'discount' => $discount_options,
+            'other_image'=>$adimages_data
         ]);
     }
 

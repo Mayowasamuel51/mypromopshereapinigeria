@@ -134,7 +134,7 @@ class UserController extends Controller{
             }
             return response()->json([
                 'status' => 200,
-                'data' => $user
+                'datas' => $user
             ]);
         }
     }

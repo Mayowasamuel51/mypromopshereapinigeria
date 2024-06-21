@@ -95,7 +95,7 @@ class AuthController extends Controller
         }
         return response()->json([
             'status' => 20,
-            'message' => $info
+            'data' => $info
         ]);
     }
     public function sighup(Request $request)
