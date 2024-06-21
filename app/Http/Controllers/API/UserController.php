@@ -126,12 +126,16 @@ class UserController extends Controller{
         $user  = User::where('id',$id)->get();
         // findOrFail($id);
         if (auth('sanctum')->check()) {
-            if($user){
+            if($user->isEmpty()){
                 return response()->json([
-                    'status' => 200,
-                    'data' => $user
-                ]);
+                    'status' => 404,
+                    'message' => 'Please login or register '
+                ], 404);
             }
+            return response()->json([
+                'status' => 200,
+                'data' => $user
+            ]);
         }
     }
 

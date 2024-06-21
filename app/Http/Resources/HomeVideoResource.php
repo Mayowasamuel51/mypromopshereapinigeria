@@ -23,7 +23,9 @@ class HomeVideoResource extends JsonResource
             'user_name'=>$this->user_name,
             'categories'=>$this->categories,
             'user_phone'=>$this->user_phone,
-            'user_website'=>$this->user_website
+            'user_website'=>$this->user_website,
+            'price_range'=>$this->price_range,
+            'description'=>$this->description,
             // 'titlevideourl'=>$this->titlevideourl
         ];
     }
