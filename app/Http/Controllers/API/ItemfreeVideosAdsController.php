@@ -44,10 +44,12 @@ class ItemfreeVideosAdsController extends Controller
                 $file = $folderPath;
                 $mainfile =    Storage::put($file, $filetitleimage);
             $items  = ItemfreeVideosAds::create([
+                
                     "user_id" => auth()->user()->id,
                     'categories' => $request->categories,
                     'description' => $request->description,
-                    'price_range' => $request->price,
+                    'price_range' => $request->price_range,
+                    'productName'=>$request->productName,
                     'state' => $request->state,
                     'local_gov' => $request->local_gov,
                     'headlines' => $request->headlines,
@@ -55,6 +57,11 @@ class ItemfreeVideosAdsController extends Controller
                     'thumbnails'=>$mainfile,
                     'usedOrnew' => $request->usedOrnew,
                     'titlevideourl' => $request->titlevideourl,
+                    'whatapp'=>$request->whatapp,
+                    'user_phone'=>$request->user_phone,
+                    'user_name'=>$request->user_name,
+                    'discount'=>$request->discount,
+                    // 'aboutMe'=>$request->aboutMe
                     // 'freetimes'=>$value
                 ]);
                 // $user_update_free_times = new User;

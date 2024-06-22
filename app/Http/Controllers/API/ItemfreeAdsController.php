@@ -88,8 +88,9 @@ class ItemfreeAdsController extends Controller
                 $items  = new  ItemfreeAds;
                 $items->user_id = auth()->user()->id;
                 $items->categories = $request->categories;
+                $items->productName = $request->productName;
                 $items->description = $request->description;
-                $items->price_range = $request->price;
+                $items->price_range = $request->price_range;
                 $items->state = $request->state;
                 $items->local_gov = $request->local_gov;
                 $items->headlines = $request->headlines;
@@ -103,6 +104,8 @@ class ItemfreeAdsController extends Controller
                 $items->aboutMe = $request->aboutMe;
                 $items->user_phone = $request->user_phone;
                 $items->user_name = $request->user_name;
+
+                // add the user website name later 
 
                 $filetitleimage = $request->file('titleImageurl');
                 $folderPath = "public/";
