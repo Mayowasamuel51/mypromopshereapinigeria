@@ -24,6 +24,7 @@ class HomePageControllerResource extends JsonResource
             'price_range'=>$this->price_range,
             'description'=>$this->description,
             'whatapp'=>$this->whatapp,
+            'productName'=>$this->productName,
             'user_phone'=>$this->user_phone,
             'categories'=>$this->categories
             // 'titlevideourl'=>$this->titlevideourl

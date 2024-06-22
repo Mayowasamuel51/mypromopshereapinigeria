@@ -20,6 +20,7 @@ class HomeVideoResource extends JsonResource
             'user_id'=>$this->user_id ,
             'titlevideourl'=>$this->titlevideourl,
         'user_image'=>$this->user_image,
+        'productName'=>$this->productName,
         'user_name'=>$this->user_name,
             'categories'=>$this->categories,
             'user_phone'=>$this->user_phone,

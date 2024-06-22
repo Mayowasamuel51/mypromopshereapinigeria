@@ -28,7 +28,8 @@ class HomePageController extends Controller
 
     public function searchapi($query) {
         $orders = HomePageControllerResource::collection( ItemfreeAds::with('user')
-        ->where('categories', 'LIKE', '%' . $query . '%')->orWhere('productName', 'LIKE', '%' . $query . '%')
+        ->where('categories', 'LIKE', '%' . $query . '%')
+        ->orWhere('productName', 'LIKE', '%' . $query . '%')
             ->get());
         if ($orders->isEmpty()) {
             return response()->json([
