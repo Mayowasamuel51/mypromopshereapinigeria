@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string("titleImageurl")->nullable();
             $table->string("discount")->nullable();
 
-            $table->integer("price_range")->nullable();
+            $table->string("price_range")->nullable();
             $table->string("usedOrnew")->nullable();
             $table->string("productName")->nullable();
             // $table->index("categories")->

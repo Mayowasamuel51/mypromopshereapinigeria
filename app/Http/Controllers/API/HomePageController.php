@@ -245,6 +245,8 @@ class HomePageController extends Controller
 
             "Womens-jewellery",
 
+            "Vehicles Upgrade",
+
             "Automotive , Vehicles",
 
             "Motorcycle",
@@ -253,7 +255,10 @@ class HomePageController extends Controller
 
             "Fashion",  /// on we put Fashion
 
-            "Sport Dresses"
+            "Sport Dresses",
+
+
+            "Luxury-apartment"
         ];
 
         // $state = ['Lagos']
@@ -357,6 +362,8 @@ class HomePageController extends Controller
 
             "Womens-jewellery",
 
+            "Vehicles Upgrade",
+
             "Automotive , Vehicles",
 
             "Motorcycle",
@@ -365,7 +372,10 @@ class HomePageController extends Controller
 
             "Fashion",  /// on we put Fashion
 
-            "Sport Dresses"
+            "Sport Dresses",
+
+            
+            "Luxury-apartment"
         ];
         $fetch_top_videos = HomeVideoResource::collection(
             DB::table('itemfree_videos_ads')
@@ -461,30 +471,59 @@ class HomePageController extends Controller
         // this is discount option will be a navbar option on the home-page
         $categories = [
             "Laptops",
+
             "Property",
+
             "Phones, Tablets",
+
             "Fragrances",
+
             "Skincare",
+
             "Groceries",
+
             "home-decoration",
+
             "Furniture ,Home ",
+
             "Womens bikins",
+
             "Kids , Baby dresses",
+
             "Womens under waress",
+
             "womens-dresses",
+
             "womens-shoes",
+
             "Pets",
+
             "Mens-shirts",
+
             "Mens-shoes",
+
             "Mens-watches",
+
             "Womens-watches",
+
             "Womens-bags",
+
             "Womens-jewellery",
+
+            "Vehicles Upgrade",
+
             "Automotive , Vehicles",
+
             "Motorcycle",
+
             "Apartment",
+
             "Fashion",  /// on we put Fashion
-            "Sport Dresses"
+
+            "Sport Dresses",
+
+            
+            "Luxury-apartment"
         ];
         $discount_options = DB::table('itemfree_ads')
             ->where('discount', 'Yes')
@@ -565,6 +604,26 @@ class HomePageController extends Controller
         return response()->json([
             'status' => 200,
             'Luxury-apartment' =>   $Luxury_apartments
+        ]);
+    }
+
+
+    public function Vehicles_Upgrade()
+    {
+        $Vehicles_Upgrade = DB::table('itemfree_ads')
+            // ->where('discount','yes')
+            ->where('itemfree_ads.categories', 'Vehicles Upgrade')
+            ->inRandomOrder()
+            ->limit(40)->get();
+        if ($Vehicles_Upgrade->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No orders found matching the query.'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'Vehicles-Upgrade' =>   $Vehicles_Upgrade
         ]);
     }
 

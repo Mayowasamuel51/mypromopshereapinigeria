@@ -64,7 +64,7 @@ class AuthController extends Controller
             'token' => $token,
             'profileImage' => $user->profileImage,
             'user' => $user->email,
-            'user-name' => $user->name,
+            'user_name' => $user->name,
             'id' => $user->id,
             'users' => $user,
             // 'token' => $user->createToken('google-token'.$user->name)->plainTextToken,

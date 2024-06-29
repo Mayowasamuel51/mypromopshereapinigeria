@@ -77,6 +77,8 @@ Route::get('/property',[HomePageController::class , 'Property']);
 // Luxury-apartment api 
 Route::get('/luxuryapartment',[HomePageController::class , 'Luxury_apartment']);
 
+Route::get('/Vehicles_Upgrade',[HomePageController::class , 'Vehicles_Upgrade']);
+
 //Laptops data api 
 Route::get('/laptops',[HomePageController::class , 'Laptops']);
   

@@ -84,7 +84,6 @@ class ItemfreeAdsController extends Controller
                         'message' => 'sorry you cant post again , please upgrade to paid plan '
                     ]);
                 }
-
                 $items  = new  ItemfreeAds;
                 $items->user_id = auth()->user()->id;
                 $items->categories = $request->categories;
@@ -104,9 +103,7 @@ class ItemfreeAdsController extends Controller
                 $items->aboutMe = $request->aboutMe;
                 $items->user_phone = $request->user_phone;
                 $items->user_name = $request->user_name;
-
                 // add the user website name later 
-
                 $filetitleimage = $request->file('titleImageurl');
                 $folderPath = "public/";
                 $fileName =  uniqid() . '.png';
