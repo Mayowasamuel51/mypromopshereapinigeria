@@ -51,6 +51,7 @@ class AuthController extends Controller
             [
                 'email_verified_at' => now(),
                 'name' => $socialiteUser->name,
+                'user_social'=>$socialiteUser->user_social,
                 'google_id' => $socialiteUser->id,
                 'avatar' => $socialiteUser->avatar,
                 'current_plan' => "free_plan",
@@ -62,6 +63,7 @@ class AuthController extends Controller
         $token = $user->createToken('google-token' . $user->name)->plainTextToken;
         return response()->json([
             'token' => $token,
+            'user_social'=>$user->user_social,
             'profileImage' => $user->profileImage,
             'user' => $user->email,
             'user_name' => $user->name,
@@ -159,6 +161,7 @@ class AuthController extends Controller
             $token =  $user->createToken("API-TOKEN" . $user->email)->plainTextToken;
             return response()->json([
                 'status' => 200,
+                'user_social'=>$user->user_social,
                 'token' => $token,
                 'aboutMe'=>$user->aboutMe,
                 'whatapp'=>$user->whatapp,

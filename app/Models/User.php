@@ -47,7 +47,23 @@ class User extends Authenticatable
         return $this->hasMany(ItemfreeAds::class);
     }
 
+   
+
     public function itemuserivideo(){
         return $this->hasMany(ItemfreeVideosAds::class);
     }
+
+    /// categories
+    public function apartment(){
+        return $this->hasMany(Apartment::class);
+    }
+    public function shortlet(){
+        return $this->hasMany(ShortLet::class);
+    }
+    
+
+
+
+
+
 }

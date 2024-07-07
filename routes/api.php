@@ -23,6 +23,10 @@ Route::post('/sighup', [AuthController::class, 'sighup']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 
+/// tesinng the uploading part 
+Route::post('/freeads', [ItemfreeAdsController::class, 'freeLimitedAds']);
+Route::post('/freeads/{id}/{type}', [ItemfreeAdsController::class, 'addimages']);
+
 Route::middleware('auth:sanctum')->group(function () {
     // get User info route 
     Route::get('/getuser', [AuthController::class, 'getInfo']);
@@ -30,9 +34,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/getuser/{id}', [UserController::class, 'settings']);
     
     // free  Ads Routes  
-    Route::post('/freeads', [ItemfreeAdsController::class, 'freeLimitedAds']);
-    Route::post('/freeads/{id}', [ItemfreeAdsController::class, 'addimages']);
+    // Route::post('/freeads', [ItemfreeAdsController::class, 'freeLimitedAds']);
+    // Route::post('/freeads/{id}', [ItemfreeAdsController::class, 'addimages']);
     Route::post('/vidoesfreeads', [ItemfreeVideosAdsController::class, 'freeLimitedAds']);
+    
 
     //update user information from setting page .............................................
     Route::put('/user/settings/{iduser}', [UserController::class, 'updateuserinfo']);

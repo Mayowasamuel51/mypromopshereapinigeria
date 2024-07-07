@@ -21,6 +21,17 @@ class AdsImages extends Model
     }
 
 
+    public function apartment(){
+        return $this->belongsTo(Apartment::class);
+    }
+
+
+    public function shortlet(){
+        return $this->belongsTo(ShortLet::class);
+    }
+
+
+
     
 
 }

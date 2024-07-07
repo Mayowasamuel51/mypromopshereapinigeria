@@ -80,6 +80,8 @@ class UserController extends Controller{
 
                     $user_infomation->whatapp= $request->whatapp;
                     $user_infomation->user_phone = $request->user_phone;
+
+                    $user_infomation->user_social =$request->user_social;
                
                     $user_infomation->save(); 
                     

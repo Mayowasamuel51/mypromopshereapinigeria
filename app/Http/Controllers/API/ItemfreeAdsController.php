@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\AdsImages;
+use App\Models\Apartment;
 use App\Models\ItemfreeAds;
 use App\Models\ItemsAds;
+use App\Models\ShortLet;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,8 +15,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemfreeAdsController extends Controller
 {
-    //
-
     public function showoneimage()
     {
         $itemfree_ads = ItemfreeAds::where('id', 2)->get();
@@ -29,150 +29,315 @@ class ItemfreeAdsController extends Controller
             // $itemfree_ads->first()->titleImageurl
         ]);
     }
-    public function  addimages(Request $request, $id)
+    public function  addimages(Request $request, $id, $type)
     {
         $request->validate([
             'itemadsimagesurls' => 'required'
-            // image'
         ]);
-        $item = ItemfreeAds::find($id);
-        $filetitleimage = $request->itemadsimagesurls;
-        $loaditem = $item->adsimages()->create([
-            'itemadsimagesurls' =>   $filetitleimage
-            // $request->itemadsimagesurls
-        ]);
-        if (auth('sanctum')->check()) {
-            if ($loaditem) { // checking network is okay............................
-                return response()->json([
-                    'message' => $loaditem
-                    // 'info'=>ItemfreeAds::find($id)
+
+        if ($type === 'apartment') {
+            if (auth('sanctum')->check()) {
+                $item =   Apartment::find($id);
+                $filetitleimage = $request->itemadsimagesurls;
+                $loaditem = $item->apartmentimages()->create([
+                    'itemadsimagesurls' =>   $filetitleimage
                 ]);
-            }
-            return response()->json([
-                'status' => 500
-                // 'info'=>ItemfreeAds::find($id)
-            ]);
-        }
-        return response()->json([
-            'status' => 401,
-            'message' => 'You are not unauthenticated Procced to login or register '
-        ]);
-    }
-    public function freeLimitedAds(Request $request, ItemfreeAds  $itemfreeAds)
-    {
-        // the freelimited ad will only allow 15  per new account to post noramls ads and video ads 
-        // we need to count the times it was used 
-        // every post == 1 eliter noraml post or videos post 
-        $request->validate([
-            // 'categories' => 'required',
-            // 'description' => 'required',
-            // 'price_range' => 'required|integer',
-            // 'state' => 'required',
-            // 'local_gov' => 'required',
-            // 'headlines' => 'required',
-            // 'titleImageurl' => 'required'
-        ]);
-
-        // check if free times is more than 20 times 
-        // check the current time stage ( meaning how many left)
-
-        if (auth('sanctum')->check()) {
-            if (auth()->user()->current_plan  === 'freeplan') {
-                if (auth()->user()->freetimes >= 5100) {
+                if ($loaditem) { // checking network is okay............................
                     return response()->json([
-                        'status' => 500,
-                        'message' => 'sorry you cant post again , please upgrade to paid plan '
+                        'message' => $loaditem
                     ]);
                 }
-                $items  = new  ItemfreeAds;
-                $items->user_id = auth()->user()->id;
-                $items->categories = $request->categories;
-                $items->productName = $request->productName;
-                $items->description = $request->description;
-                $items->price_range = $request->price_range;
-                $items->state = $request->state;
-                $items->local_gov = $request->local_gov;
-                $items->headlines = $request->headlines;
-                $items->itemadsid = rand(999297, 45543);
-                
-                $items->usedOrnew = $request->usedOrnew;
-                $items->user_image = $request->user_image;
-                $items->discount = $request->discount;
-
-                $items->whatapp = $request->whatapp;
-                $items->aboutMe = $request->aboutMe;
-                $items->user_phone = $request->user_phone;
-                $items->user_name = $request->user_name;
-                // add the user website name later 
-                $filetitleimage = $request->file('titleImageurl');
-                $folderPath = "public/";
-                $fileName =  uniqid() . '.png';
-                $file = $folderPath;
-                $mainfile =    Storage::put($file, $filetitleimage);
-                $items->titleImageurl = $mainfile;
-
-
-
-                // if ($request->hasFile('titleImageurl')) {
-                //     $fileTitleImage = $request->file('titleImageurl');
-                //     $folderPath = "public/";
-                //     $fileName = uniqid() . '.png';
-                //     $filePath = $folderPath ;
-                //     // . $fileName;
-
-                //     // Save the file to the specified path
-                //     $storedFile = Storage::put($filePath, file_get_contents($fileTitleImage));
-
-                //     // Check if the file was successfully stored
-                //     if ($storedFile) {
-                //         $items->titleImageurl = $storedFile;
-                //     } else {
-                //         // Handle the error if the file was not stored
-                //         // You can throw an exception or return an error response
-                //         throw new \Exception('File upload failed');
-                //     }
-                // }
-
-                $items->save();
-
-                if (
-                    $items
-                    // &&
-                    // $post
-                    // $comment
-                ) {
-
-                    if (auth()) {
-                        $affected = DB::table('users')->increment('freetimes');
-                        //  DB::table('users')
-                        //     ->where('id', auth()->user()->id)
-                        //     ->update(['freetimes' => $value]);
-                        // $comment = new AdsImages(['itemadsimagesurls' => $request->itemadsimagesurls]);
-                        // $post =  ItemfreeAds::find($items->id);
-                        // $post->adsimages()->save($comment);
-                        return response()->json([
-                            'status' => 201,
-                            'item' => $items->id,
-                            'check' =>  $affected,
-                            'message' => 'items ads created'
-                        ]);
-                    }
-                }
-                return response()->json([
-                    'status' => 500,
-                    'message' => 'something happend while trying to create a ad  '
-                ]);
             }
             return response()->json([
-                'status' => 500,
-                'message' => 'Sorry you have finshed your free ads   '
+                'status' => 401,
+                'message' => 'You are not unauthenticated Procced to login or register '
+            ]);
+        }
+
+        if ($type === 'shortlet') {
+            if (auth('sanctum')->check()) {
+                $item =   ShortLet::find($id);
+                $filetitleimage = $request->itemadsimagesurls;
+                $loaditem = $item->shortletimages()->create([
+                    'itemadsimagesurls' =>   $filetitleimage
+                ]);
+                if ($loaditem) { // checking network is okay............................
+                    return response()->json([
+                        'message' => $loaditem
+                    ]);
+                }
+            }
+            return response()->json([
+                'status' => 401,
+                'message' => 'You are not unauthenticated Procced to login or register '
+            ]);
+        }
+    }
+    // public function  addimages(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'itemadsimagesurls' => 'required'
+    //         // image'
+    //     ]);
+    //     $item = ItemfreeAds::find($id);
+    //     $filetitleimage = $request->itemadsimagesurls;
+    //     $loaditem = $item->adsimages()->create([
+    //         'itemadsimagesurls' =>   $filetitleimage
+    //     ]);
+
+    //     if (auth('sanctum')->check()) {
+    //         if ($loaditem) { // checking network is okay............................
+    //             return response()->json([
+    //                 'message' => $loaditem
+    //                 // 'info'=>ItemfreeAds::find($id)
+    //             ]);
+    //         }
+    //         return response()->json([
+    //             'status' => 500
+    //             // 'info'=>ItemfreeAds::find($id)
+    //         ]);
+    //     }
+    //     return response()->json([
+    //         'status' => 401,
+    //         'message' => 'You are not unauthenticated Procced to login or register '
+    //     ]);
+    // }
+
+    public function freeLimitedAds(Request $request)
+    {
+        // categories we need building for === Apartment, Car Sales , Car Loan , ClothAndShoe , HomeTools, ShortLet
+        $request->validate([
+            'categories' => 'required',
+        ]);
+        /// picking the categoires one by one 
+        if ($request->categories === 'Apartment') {
+            $request->validate([
+                // 'type' => 'required',
+                // 'address' => 'required',
+                // 'bedroom' => 'required',
+                // 'sale_rent' => 'required',
+                // 'market_status' => 'required',
+                // 'guide' => 'required'
+            ]);
+            $items  = new  Apartment;
+            $items->user_id = 6;
+            // auth()->user()->id;
+            $items->itemadsid = rand(999297, 45543);
+            $items->whatapp = $request->whatapp;
+            $items->aboutMe = $request->aboutMe;
+            $items->user_phone = $request->user_phone;
+            $items->user_social = $request->user_social;
+            $items->user_name = $request->user_name;
+
+            $filetitleimage = $request->file('titleImageurl');
+            $folderPath = "public/";
+            $fileName =  uniqid() . '.png';
+            $file = $folderPath;
+            $mainfile =    Storage::put($file, $filetitleimage);
+            $items->titleImageurl = $mainfile;
+
+            $items->description = $request->description;
+            $items->price = $request->price;
+            $items->state = $request->state;
+            $items->local_gov = $request->local_gov;
+            $items->discount = $request->discount;
+
+
+            $items->type = $request->type;
+            $items->market_status = $request->market_status;
+            $items->address = $request->address;
+            $items->sale_rent = $request->sale_rent;
+            $items->guide = $request->guide;
+            $items->lastupdated = $request->lastupdated;
+            $items->bedroom = $request->bedroom;
+
+            $items->save();
+
+            return response()->json([
+                'status' => 200,
+                'item' => $items->id,
+                'data' => 'items ads created',
+                'type' => 'apartment'
+            ]);
+        }
+        if ($request->categories === 'Shortlet') {
+            $request->validate([
+                // 'type' => 'required',
+                // 'max_guest' => 'required',
+                // 'house_rules' => 'required',
+            ]);
+            $items  = new  ShortLet;
+            $items->user_id = 6;
+            $items->itemadsid = rand(999297, 45543);
+            $items->whatapp = $request->whatapp;
+            $items->aboutMe = $request->aboutMe;
+            $items->user_phone = $request->user_phone;
+            $items->user_social = $request->user_social;
+            $items->user_name = $request->user_name;
+
+            $filetitleimage = $request->file('titleImageurl');
+            $folderPath = "public/";
+            $fileName =  uniqid() . '.png';
+            $file = $folderPath;
+            $mainfile =    Storage::put($file, $filetitleimage);
+            $items->titleImageurl = $mainfile;
+
+            $items->description = $request->description;
+            $items->price = $request->price;
+            $items->state = $request->state;
+            $items->local_gov = $request->local_gov;
+            $items->discount = $request->discount;
+
+            $items->type = $request->type;
+            $items->parking_space = $request->parking_space;
+            $items->address = $request->address;
+            $items->house_rules = $request->house_rules;
+            $items->rooms = $request->rooms;
+            $items->max_guest = $request->max_guest;
+            $items->policy = $request->policy;
+            $items->self_check_in = $request->self_check_in;
+            $items->facilities = $request->facilities;
+
+
+            $items->save();
+
+            return response()->json([
+                'status' => 200,
+                'item' => $items->id,
+                'type' => 'shortlet',
+                'data' => 'items ads created for shortLet'
             ]);
         }
         return response()->json([
-            'status' => 401,
-            'message' => 'You are not unauthenticated Procced to login or register '
+            'status' => 500,
+            'data' => 'it not showing this cagetieors '
         ]);
     }
+
+    public function limited(Request $request, $categoies)
+    {
+    }
+
+
+
+
+
+
+    // public function freeLimitedAds(Request $request, ItemfreeAds  $itemfreeAds)
+    // {
+    //     // the freelimited ad will only allow 15  per new account to post noramls ads and video ads 
+    //     // we need to count the times it was used 
+    //     // every post == 1 eliter noraml post or videos post 
+    //     $request->validate([
+    //         // 'categories' => 'required',
+    //         // 'description' => 'required',
+    //         // 'price_range' => 'required|integer',
+    //         // 'state' => 'required',
+    //         // 'local_gov' => 'required',
+    //         // 'headlines' => 'required',
+    //         // 'titleImageurl' => 'required'
+    //     ]);
+
+    //     // check if free times is more than 20 times 
+    //     // check the current time stage ( meaning how many left)
+
+    //     if (auth('sanctum')->check()) {
+    //         if (auth()->user()->current_plan  === 'freeplan') {
+    //             if (auth()->user()->freetimes >= 5100) {
+    //                 return response()->json([
+    //                     'status' => 500,
+    //                     'message' => 'sorry you cant post again , please upgrade to paid plan '
+    //                 ]);
+    //             }
+    //             $items  = new  ItemfreeAds;
+    //             $items->user_id = auth()->user()->id;
+    //             $items->categories = $request->categories;
+    //             $items->productName = $request->productName;
+    //             $items->description = $request->description;
+    //             $items->price_range = $request->price_range;
+    //             $items->state = $request->state;
+    //             $items->local_gov = $request->local_gov;
+    //             $items->headlines = $request->headlines;
+    //             $items->itemadsid = rand(999297, 45543);
+
+    //             $items->usedOrnew = $request->usedOrnew;
+    //             $items->user_image = $request->user_image;
+    //             $items->discount = $request->discount;
+
+    //             $items->whatapp = $request->whatapp;
+    //             $items->aboutMe = $request->aboutMe;
+    //             $items->user_phone = $request->user_phone;
+    //             $items->user_name = $request->user_name;
+    //             // add the user website name later 
+    //             $filetitleimage = $request->file('titleImageurl');
+    //             $folderPath = "public/";
+    //             $fileName =  uniqid() . '.png';
+    //             $file = $folderPath;
+    //             $mainfile =    Storage::put($file, $filetitleimage);
+    //             $items->titleImageurl = $mainfile;
+
+
+
+    //             // if ($request->hasFile('titleImageurl')) {
+    //             //     $fileTitleImage = $request->file('titleImageurl');
+    //             //     $folderPath = "public/";
+    //             //     $fileName = uniqid() . '.png';
+    //             //     $filePath = $folderPath ;
+    //             //     // . $fileName;
+
+    //             //     // Save the file to the specified path
+    //             //     $storedFile = Storage::put($filePath, file_get_contents($fileTitleImage));
+
+    //             //     // Check if the file was successfully stored
+    //             //     if ($storedFile) {
+    //             //         $items->titleImageurl = $storedFile;
+    //             //     } else {
+    //             //         // Handle the error if the file was not stored
+    //             //         // You can throw an exception or return an error response
+    //             //         throw new \Exception('File upload failed');
+    //             //     }
+    //             // }
+
+    //             $items->save();
+
+    //             if (
+    //                 $items
+    //                 // &&
+    //                 // $post
+    //                 // $comment
+    //             ) {
+
+    //                 if (auth()) {
+    //                     $affected = DB::table('users')->increment('freetimes');
+    //                     //  DB::table('users')
+    //                     //     ->where('id', auth()->user()->id)
+    //                     //     ->update(['freetimes' => $value]);
+    //                     // $comment = new AdsImages(['itemadsimagesurls' => $request->itemadsimagesurls]);
+    //                     // $post =  ItemfreeAds::find($items->id);
+    //                     // $post->adsimages()->save($comment);
+    //                     return response()->json([
+    //                         'status' => 201,
+    //                         'item' => $items->id,
+    //                         'check' =>  $affected,
+    //                         'message' => 'items ads created'
+    //                     ]);
+    //                 }
+    //             }
+    //             return response()->json([
+    //                 'status' => 500,
+    //                 'message' => 'something happend while trying to create a ad  '
+    //             ]);
+    //         }
+    //         return response()->json([
+    //             'status' => 500,
+    //             'message' => 'Sorry you have finshed your free ads   '
+    //         ]);
+    //     }
+    //     return response()->json([
+    //         'status' => 401,
+    //         'message' => 'You are not unauthenticated Procced to login or register '
+    //     ]);
+    // }
 }
 
 
