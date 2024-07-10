@@ -205,6 +205,8 @@ class HomePageController extends Controller
 
 
         $categories = [
+            "shortlet",
+            
             "Laptops",
 
             "Property",
