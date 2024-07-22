@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\AdsImages;
 use App\Models\Apartment;
+use App\Models\CarLoan;
+use App\Models\CarSales;
 use App\Models\ItemfreeAds;
 use App\Models\ItemsAds;
 use App\Models\ShortLet;
@@ -29,12 +31,10 @@ class ItemfreeAdsController extends Controller
             // $itemfree_ads->first()->titleImageurl
         ]);
     }
-    public function  addimages(Request $request, $id, $type)
-    {
+    public function  addimages(Request $request, $id, $type){
         $request->validate([
             'itemadsimagesurls' => 'required'
         ]);
-
         if ($type === 'apartment') {
             if (auth('sanctum')->check()) {
                 $item =   Apartment::find($id);
@@ -53,7 +53,6 @@ class ItemfreeAdsController extends Controller
                 'message' => 'You are not unauthenticated Procced to login or register '
             ]);
         }
-
         if ($type === 'shortlet') {
             if (auth('sanctum')->check()) {
                 $item =   ShortLet::find($id);
@@ -71,6 +70,42 @@ class ItemfreeAdsController extends Controller
                 'status' => 401,
                 'message' => 'You are not unauthenticated Procced to login or register '
             ]);
+        }
+        if ($type === 'carloan') {
+            if (auth('sanctum')->check()) {
+                $item =   Carloan::find($id);
+                $filetitleimage = $request->itemadsimagesurls;
+                $loaditem = $item->carloanimages()->create([
+                    'itemadsimagesurls' =>   $filetitleimage
+                ]);
+                if ($loaditem) { // checking network is okay............................
+                    return response()->json([
+                        'message' => $loaditem
+                    ]);
+                }
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'You are not unauthenticated Procced to login or register '
+                ]);
+            }
+        }
+        if ($type === 'carsales') {
+            if (auth('sanctum')->check()) {
+                $item =   CarSales::find($id);
+                $filetitleimage = $request->itemadsimagesurls;
+                $loaditem = $item->carloanimages()->create([
+                    'itemadsimagesurls' =>   $filetitleimage
+                ]);
+                if ($loaditem) { // checking network is okay............................
+                    return response()->json([
+                        'message' => $loaditem
+                    ]);
+                }
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'You are not unauthenticated Procced to login or register '
+                ]);
+            }
         }
     }
     // public function  addimages(Request $request, $id)
@@ -103,9 +138,9 @@ class ItemfreeAdsController extends Controller
     //     ]);
     // }
 
-    public function freeLimitedAds(Request $request)
-    {
+    public function freeLimitedAds(Request $request) {
         // categories we need building for === Apartment, Car Sales , Car Loan , ClothAndShoe , HomeTools, ShortLet
+        // each categories will have 5 each input feilds for the time being now!!!!
         $request->validate([
             'categories' => 'required',
         ]);
@@ -208,6 +243,94 @@ class ItemfreeAdsController extends Controller
                 'data' => 'items ads created for shortLet'
             ]);
         }
+        if ($request->categories === 'Carloan') {
+            $request->validate([
+                // 'type' => 'required',
+                // 'brand' => 'required',
+                // 'policy' => 'required',
+            ]);
+            $items  = new  CarLoan;
+            $items->user_id = 6;
+            $items->itemadsid = rand(999297, 45543);
+            $items->whatapp = $request->whatapp;
+            $items->aboutMe = $request->aboutMe;
+            $items->user_phone = $request->user_phone;
+            $items->user_social = $request->user_social;
+            $items->user_name = $request->user_name;
+
+            $filetitleimage = $request->file('titleImageurl');
+            $folderPath = "public/";
+            $fileName =  uniqid() . '.png';
+            $file = $folderPath;
+            $mainfile =    Storage::put($file, $filetitleimage);
+            $items->titleImageurl = $mainfile;
+
+            $items->description = $request->description;
+            $items->price = $request->price;
+            $items->state = $request->state;
+            $items->local_gov = $request->local_gov;
+            $items->discount = $request->discount;
+
+            $items->type = $request->type;
+            $items->brand = $request->brand;
+            $items->auto_manuel = $request->auto_manuel;
+            $items->price_per_day = $request->price_per_day;
+            $items->policy = $request->policy;
+
+            $items->save();
+
+            return response()->json([
+                'status' => 200,
+                'item' => $items->id,
+                'type' => 'carloan',
+                'data' => 'items ads created for carloan'
+            ]);
+        }
+        if ($request->categories === 'CarSales') {
+            $request->validate([
+                // 'type' => 'required',
+                // 'brand' => 'required',
+                // 'policy' => 'required',
+            ]);
+            $items  = new  CarSales;
+            $items->user_id = 6;
+            $items->itemadsid = rand(999297, 45543);
+            $items->whatapp = $request->whatapp;
+            $items->aboutMe = $request->aboutMe;
+            $items->user_phone = $request->user_phone;
+            $items->user_social = $request->user_social;
+            $items->user_name = $request->user_name;
+
+            $filetitleimage = $request->file('titleImageurl');
+            $folderPath = "public/";
+            $fileName =  uniqid() . '.png';
+            $file = $folderPath;
+            $mainfile =    Storage::put($file, $filetitleimage);
+            $items->titleImageurl = $mainfile;
+
+            $items->description = $request->description;
+            $items->price = $request->price;
+            $items->state = $request->state;
+            $items->local_gov = $request->local_gov;
+            $items->discount = $request->discount;
+
+            $items->type = $request->type;
+            $items->brand = $request->brand;
+            $items->auto_manuel = $request->auto_manuel;
+            $items->engine_condition = $request->engine_condition;
+            $items->condition_assessment = $request->condition_assessment;
+
+            $items->save();
+
+            return response()->json([
+                'status' => 200,
+                'item' => $items->id,
+                'type' => 'carsales',
+                'data' => 'items ads created for carloan'
+            ]);
+        }
+
+
         return response()->json([
             'status' => 500,
             'data' => 'it not showing this cagetieors '

@@ -15,7 +15,6 @@ class FeedBackController extends Controller
             'name'=>'required',
             'message'=>'required'
         ]);
-
         $item = ItemfreeAds::find($itemid);
         $name = $request->name;
         $message = $request->message;
