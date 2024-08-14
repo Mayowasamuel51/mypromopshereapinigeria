@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cloths', function (Blueprint $table) {
-            $table->id();
+            $table->id();;
             $table->foreignIdFor(User::class)->nullable();
             $table->string("discount")->nullable();
             $table->string("user_image")->nullable();
