@@ -31,7 +31,8 @@ class ItemfreeAdsController extends Controller
             // $itemfree_ads->first()->titleImageurl
         ]);
     }
-    public function  addimages(Request $request, $id, $type){
+    public function  addimages(Request $request, $id, $type)
+    {
         $request->validate([
             'itemadsimagesurls' => 'required'
         ]);
@@ -107,6 +108,8 @@ class ItemfreeAdsController extends Controller
                 ]);
             }
         }
+        if ($type === 'other') {
+        }
     }
     // public function  addimages(Request $request, $id)
     // {
@@ -138,196 +141,230 @@ class ItemfreeAdsController extends Controller
     //     ]);
     // }
 
-    public function freeLimitedAds(Request $request) {
+    public function freeLimitedAds(Request $request)
+    {
         // categories we need building for === Apartment, Car Sales , Car Loan , ClothAndShoe , HomeTools, ShortLet
         // each categories will have 5 each input feilds for the time being now!!!!
         $request->validate([
             'categories' => 'required',
         ]);
         /// picking the categoires one by one 
-        if ($request->categories === 'Apartment') {
-            $request->validate([
-                // 'type' => 'required',
-                // 'address' => 'required',
-                // 'bedroom' => 'required',
-                // 'sale_rent' => 'required',
-                // 'market_status' => 'required',
-                // 'guide' => 'required'
-            ]);
-            $items  = new  Apartment;
-            $items->user_id = 6;
-            // auth()->user()->id;
-            $items->itemadsid = rand(999297, 45543);
-            $items->whatapp = $request->whatapp;
-            $items->aboutMe = $request->aboutMe;
-            $items->user_phone = $request->user_phone;
-            $items->user_social = $request->user_social;
-            $items->user_name = $request->user_name;
+        if (auth('sanctum')->check()) {
+            if ($request->categories === 'Apartment') {
+                $request->validate([
+                    // 'market_status' => 'required',
+                    // 'guide' => 'required'
+                ]);
+                $items  = new  Apartment;
+                $items->user_id = 6;
+                // auth()->user()->id;
+                $items->itemadsid = rand(999297, 45543);
+                $items->whatapp = $request->whatapp;
+                $items->aboutMe = $request->aboutMe;
+                $items->user_phone = $request->user_phone;
+                $items->user_social = $request->user_social;
+                $items->user_name = $request->user_name;
 
-            $filetitleimage = $request->file('titleImageurl');
-            $folderPath = "public/";
-            $fileName =  uniqid() . '.png';
-            $file = $folderPath;
-            $mainfile =    Storage::put($file, $filetitleimage);
-            $items->titleImageurl = $mainfile;
+                $filetitleimage = $request->file('titleImageurl');
+                $folderPath = "public/";
+                $fileName =  uniqid() . '.png';
+                $file = $folderPath;
+                $mainfile =    Storage::put($file, $filetitleimage);
+                $items->titleImageurl = $mainfile;
 
-            $items->description = $request->description;
-            $items->price = $request->price;
-            $items->state = $request->state;
-            $items->local_gov = $request->local_gov;
-            $items->discount = $request->discount;
+                $items->description = $request->description;
+                $items->price = $request->price;
+                $items->state = $request->state;
+                $items->local_gov = $request->local_gov;
+                $items->discount = $request->discount;
 
 
-            $items->type = $request->type;
-            $items->market_status = $request->market_status;
-            $items->address = $request->address;
-            $items->sale_rent = $request->sale_rent;
-            $items->guide = $request->guide;
-            $items->lastupdated = $request->lastupdated;
-            $items->bedroom = $request->bedroom;
+                $items->type = $request->type;
+                $items->market_status = $request->market_status;
+                $items->address = $request->address;
+                $items->sale_rent = $request->sale_rent;
+                $items->guide = $request->guide;
+                $items->lastupdated = $request->lastupdated;
+                $items->bedroom = $request->bedroom;
 
-            $items->save();
+                $items->save();
 
-            return response()->json([
-                'status' => 200,
-                'item' => $items->id,
-                'data' => 'items ads created',
-                'type' => 'apartment'
-            ]);
-        }
-        if ($request->categories === 'Shortlet') {
-            $request->validate([
-                // 'type' => 'required',
-                // 'max_guest' => 'required',
-                // 'house_rules' => 'required',
-            ]);
-            $items  = new  ShortLet;
-            $items->user_id = 6;
-            $items->itemadsid = rand(999297, 45543);
-            $items->whatapp = $request->whatapp;
-            $items->aboutMe = $request->aboutMe;
-            $items->user_phone = $request->user_phone;
-            $items->user_social = $request->user_social;
-            $items->user_name = $request->user_name;
+                return response()->json([
+                    'status' => 200,
+                    'item' => $items->id,
+                    'data' => 'items ads created',
+                    'type' => 'apartment'
+                ]);
+            }
+            if ($request->categories === 'Shortlet') {
+                $request->validate([
+                    // 'type' => 'required',
+                    // 'max_guest' => 'required',
+                    // 'house_rules' => 'required',
+                ]);
+                $items  = new  ShortLet;
+                $items->user_id = 6;
+                $items->itemadsid = rand(999297, 45543);
+                $items->whatapp = $request->whatapp;
+                $items->aboutMe = $request->aboutMe;
+                $items->user_phone = $request->user_phone;
+                $items->user_social = $request->user_social;
+                $items->user_name = $request->user_name;
 
-            $filetitleimage = $request->file('titleImageurl');
-            $folderPath = "public/";
-            $fileName =  uniqid() . '.png';
-            $file = $folderPath;
-            $mainfile =    Storage::put($file, $filetitleimage);
-            $items->titleImageurl = $mainfile;
+                $filetitleimage = $request->file('titleImageurl');
+                $folderPath = "public/";
+                $fileName =  uniqid() . '.png';
+                $file = $folderPath;
+                $mainfile =    Storage::put($file, $filetitleimage);
+                $items->titleImageurl = $mainfile;
 
-            $items->description = $request->description;
-            $items->price = $request->price;
-            $items->state = $request->state;
-            $items->local_gov = $request->local_gov;
-            $items->discount = $request->discount;
+                $items->description = $request->description;
+                $items->price = $request->price;
+                $items->state = $request->state;
+                $items->local_gov = $request->local_gov;
+                $items->discount = $request->discount;
 
-            $items->type = $request->type;
-            $items->parking_space = $request->parking_space;
-            $items->address = $request->address;
-            $items->house_rules = $request->house_rules;
-            $items->rooms = $request->rooms;
-            $items->max_guest = $request->max_guest;
-            $items->policy = $request->policy;
-            $items->self_check_in = $request->self_check_in;
-            $items->facilities = $request->facilities;
+                $items->type = $request->type;
+                $items->parking_space = $request->parking_space;
+                $items->address = $request->address;
+                $items->house_rules = $request->house_rules;
+                $items->rooms = $request->rooms;
+                $items->max_guest = $request->max_guest;
+                $items->policy = $request->policy;
+                $items->self_check_in = $request->self_check_in;
+                $items->facilities = $request->facilities;
 
 
-            $items->save();
+                $items->save();
 
-            return response()->json([
-                'status' => 200,
-                'item' => $items->id,
-                'type' => 'shortlet',
-                'data' => 'items ads created for shortLet'
-            ]);
-        }
-        if ($request->categories === 'Carloan') {
-            $request->validate([
-                // 'type' => 'required',
-                // 'brand' => 'required',
-                // 'policy' => 'required',
-            ]);
-            $items  = new  CarLoan;
-            $items->user_id = 6;
-            $items->itemadsid = rand(999297, 45543);
-            $items->whatapp = $request->whatapp;
-            $items->aboutMe = $request->aboutMe;
-            $items->user_phone = $request->user_phone;
-            $items->user_social = $request->user_social;
-            $items->user_name = $request->user_name;
+                return response()->json([
+                    'status' => 200,
+                    'item' => $items->id,
+                    'type' => 'shortlet',
+                    'data' => 'items ads created for shortLet'
+                ]);
+            }
+            if ($request->categories === 'Carloan') {
+                $request->validate([
+                    // 'type' => 'required',
+                    // 'brand' => 'required',
+                    // 'policy' => 'required',
+                ]);
+                $items  = new  CarLoan;
+                $items->user_id = 6;
+                $items->itemadsid = rand(999297, 45543);
+                $items->whatapp = $request->whatapp;
+                $items->aboutMe = $request->aboutMe;
+                $items->user_phone = $request->user_phone;
+                $items->user_social = $request->user_social;
+                $items->user_name = $request->user_name;
 
-            $filetitleimage = $request->file('titleImageurl');
-            $folderPath = "public/";
-            $fileName =  uniqid() . '.png';
-            $file = $folderPath;
-            $mainfile =    Storage::put($file, $filetitleimage);
-            $items->titleImageurl = $mainfile;
+                $filetitleimage = $request->file('titleImageurl');
+                $folderPath = "public/";
+                $fileName =  uniqid() . '.png';
+                $file = $folderPath;
+                $mainfile =    Storage::put($file, $filetitleimage);
+                $items->titleImageurl = $mainfile;
 
-            $items->description = $request->description;
-            $items->price = $request->price;
-            $items->state = $request->state;
-            $items->local_gov = $request->local_gov;
-            $items->discount = $request->discount;
+                $items->description = $request->description;
+                $items->price = $request->price;
+                $items->state = $request->state;
+                $items->local_gov = $request->local_gov;
+                $items->discount = $request->discount;
 
-            $items->type = $request->type;
-            $items->brand = $request->brand;
-            $items->auto_manuel = $request->auto_manuel;
-            $items->price_per_day = $request->price_per_day;
-            $items->policy = $request->policy;
+                $items->type = $request->type;
+                $items->brand = $request->brand;
+                $items->auto_manuel = $request->auto_manuel;
+                $items->price_per_day = $request->price_per_day;
+                $items->policy = $request->policy;
 
-            $items->save();
+                $items->save();
 
-            return response()->json([
-                'status' => 200,
-                'item' => $items->id,
-                'type' => 'carloan',
-                'data' => 'items ads created for carloan'
-            ]);
-        }
-        if ($request->categories === 'CarSales') {
-            $request->validate([
-                // 'type' => 'required',
-                // 'brand' => 'required',
-                // 'policy' => 'required',
-            ]);
-            $items  = new  CarSales;
-            $items->user_id = 6;
-            $items->itemadsid = rand(999297, 45543);
-            $items->whatapp = $request->whatapp;
-            $items->aboutMe = $request->aboutMe;
-            $items->user_phone = $request->user_phone;
-            $items->user_social = $request->user_social;
-            $items->user_name = $request->user_name;
+                return response()->json([
+                    'status' => 200,
+                    'item' => $items->id,
+                    'type' => 'carloan',
+                    'data' => 'items ads created for carloan'
+                ]);
+            }
+            if ($request->categories === 'CarSales') {
+                $request->validate([
+                    // 'type' => 'required',
+                    // 'brand' => 'required',
+                    // 'policy' => 'required',
+                ]);
+                $items  = new  CarSales;
+                $items->user_id = 6;
+                $items->itemadsid = rand(999297, 45543);
+                $items->whatapp = $request->whatapp;
+                $items->aboutMe = $request->aboutMe;
+                $items->user_phone = $request->user_phone;
+                $items->user_social = $request->user_social;
+                $items->user_name = $request->user_name;
 
-            $filetitleimage = $request->file('titleImageurl');
-            $folderPath = "public/";
-            $fileName =  uniqid() . '.png';
-            $file = $folderPath;
-            $mainfile =    Storage::put($file, $filetitleimage);
-            $items->titleImageurl = $mainfile;
+                $filetitleimage = $request->file('titleImageurl');
+                $folderPath = "public/";
+                $fileName =  uniqid() . '.png';
+                $file = $folderPath;
+                $mainfile =    Storage::put($file, $filetitleimage);
+                $items->titleImageurl = $mainfile;
 
-            $items->description = $request->description;
-            $items->price = $request->price;
-            $items->state = $request->state;
-            $items->local_gov = $request->local_gov;
-            $items->discount = $request->discount;
+                $items->description = $request->description;
+                $items->price = $request->price;
+                $items->state = $request->state;
+                $items->local_gov = $request->local_gov;
+                $items->discount = $request->discount;
 
-            $items->type = $request->type;
-            $items->brand = $request->brand;
-            $items->auto_manuel = $request->auto_manuel;
-            $items->engine_condition = $request->engine_condition;
-            $items->condition_assessment = $request->condition_assessment;
+                $items->type = $request->type;
+                $items->brand = $request->brand;
+                $items->auto_manuel = $request->auto_manuel;
+                $items->engine_condition = $request->engine_condition;
+                $items->condition_assessment = $request->condition_assessment;
 
-            $items->save();
+                $items->save();
 
-            return response()->json([
-                'status' => 200,
-                'item' => $items->id,
-                'type' => 'carsales',
-                'data' => 'items ads created for carloan'
-            ]);
+                return response()->json([
+                    'status' => 200,
+                    'item' => $items->id,
+                    'type' => 'carsales',
+                    'data' => 'items ads created for carloan'
+                ]);
+            } else {
+                // the validation for the other input wil  be manange be frontend in reactjs 
+                $items  = new  ItemfreeAds;
+                $items->user_id = 6;
+                //  auth()->user()->id;
+                $items->categories = $request->categories;
+                $items->productName = $request->productName;
+                $items->description = $request->description;
+                $items->price = $request->price;
+                $items->state = $request->state;
+                $items->local_gov = $request->local_gov;
+                $items->headlines = $request->headlines;
+                $items->itemadsid = rand(999297, 45543);
+                $items->usedOrnew = $request->usedOrnew;
+                $items->user_image = $request->user_image;
+                $items->discount = $request->discount;
+                $items->whatapp = $request->whatapp;
+                $items->aboutMe = $request->aboutMe;
+                $items->user_phone = $request->user_phone;
+                $items->user_name = $request->user_name;
+                // add the user website name later 
+                $filetitleimage = $request->file('titleImageurl');
+                $folderPath = "public/";
+                $fileName =  uniqid() . '.png';
+                $file = $folderPath;
+                $mainfile =    Storage::put($file, $filetitleimage);
+                $items->titleImageurl = $mainfile;
+                $items->save();
+
+                return response()->json([
+                    'status' => 200,
+                    'item' => $items->id,
+                    'type' => 'other',
+                    'data' => 'items ads created for other type'
+                ]);
+            }
         }
 
 
