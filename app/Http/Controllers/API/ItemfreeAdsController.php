@@ -366,8 +366,6 @@ class ItemfreeAdsController extends Controller
                 ]);
             }
         }
-
-
         return response()->json([
             'status' => 500,
             'data' => 'it not showing this cagetieors '
