@@ -70,7 +70,7 @@ class AuthController extends Controller
             'id' => $user->id,
             'users' => $user,
             // 'token' => $user->createToken('google-token'.$user->name)->plainTextToken,
-            // 'token_type' => 'Bearer',
+            'token_type' => 'Bearer',
         ]);
     }
 
