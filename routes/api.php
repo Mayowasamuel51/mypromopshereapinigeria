@@ -7,6 +7,8 @@ use App\Http\Controllers\API\ItemfreeVideosAdsController;
 use App\Http\Controllers\API\ItemsAdsController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\FeedBackController;
+use App\Http\Controllers\PromoTalk;
+use App\Http\Controllers\PromoTweet;
 use Illuminate\Support\Facades\Route;
 
 
@@ -14,12 +16,44 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('auth', [AuthController::class, 'redirectToAuth']);
 Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
+// -------- PROMOTALK ---------------------------
+
+// post for my promotalk
+Route::post('/promotalks', [PromoTalk::class, 'makepost']);
+Route::post('/promotalks/{id}', [PromoTalk::class, 'imagestalk']);
+
+
+// view public promotalk
+Route::get('/promotalks', [PromoTalk::class, 'promotalk']);
+Route::get('/promotalks/{id}', [PromoTalk::class, 'promotalksingle']);
+
+//feedback api  for promotalk
+Route::post('/promotalkfeedback/{itemid}', [PromoTalk::class, 'feedback']);
+Route::get('/promotalkfeedback/{itemid}', [PromoTalk::class, 'getfeedback']);
+
+// -------- PROMOTALK ---------------------------
+
+
+// -------- PROMOTWEET  ---------------------------
+
+Route::post('/promotweet', [PromoTweet::class, 'makepost']);
+Route::post('/promotweet/{id}', [PromoTweet::class, 'imagestweet']);
+
+
+// view public promotalk
+Route::get('/promotweet', [PromoTweet::class, 'promotweet']);
+Route::get('/promotweet/{id}', [PromoTweet::class, 'promotweetsingle']);
+
+// //feedback api  for promotalk
+Route::post('/promotweetfeadback/{itemid}', [PromoTweet::class, 'feedback']);
+Route::get('/promotweetfeadback/{itemid}', [PromoTweet::class, 'getfeedback']);
 
 
 
+// -------- PROMOTWEET ---------------------------
 // Public Api for login and Sighup 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/sighup', [AuthController::class, 'sighup']);
+Route::post('/register', [AuthController::class, 'sighup']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
 
@@ -28,27 +62,30 @@ Route::post('/freeads', [ItemfreeAdsController::class, 'freeLimitedAds']);
 Route::post('/freeads/{id}/{type}', [ItemfreeAdsController::class, 'addimages']);
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    
+
     // get User info route 
     Route::get('/getuser', [AuthController::class, 'getInfo']);
     //get user profile details 
     Route::get('/getuser/{id}', [UserController::class, 'settings']);
-    
+
     // free  Ads Routes  
     // Route::post('/freeads', [ItemfreeAdsController::class, 'freeLimitedAds']);
     // Route::post('/freeads/{id}', [ItemfreeAdsController::class, 'addimages']);
     Route::post('/vidoesfreeads', [ItemfreeVideosAdsController::class, 'freeLimitedAds']);
-    
+
 
     //update user information from setting page .............................................
     Route::put('/user/settings/{iduser}', [UserController::class, 'updateuserinfo']);
     Route::put('/user/settings/background/{iduser}', [UserController::class, 'updatebackgroundimage']);
     Route::get('/user/info/{iduser}', [UserController::class, 'profileEdit']);
-    
 
-   
-     // PersonalUploads for a user
-     Route::get('/posts/{id}', [UserController::class, 'personalUploads']);
-     Route::get('/postsvideos/{id}', [UserController::class, 'personalVideos']);
+
+
+    // PersonalUploads for a user
+    Route::get('/posts/{id}', [UserController::class, 'personalUploads']);
+    Route::get('/postsvideos/{id}', [UserController::class, 'personalVideos']);
 
 
     // Paid Ads 
@@ -57,7 +94,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 // Homepage search side 
-Route::get('/search/{query}',[HomePageController::class, 'searchapi']);
+Route::get('/search/{query}', [HomePageController::class, 'searchapi']);
 
 //  Trending Ads Api 
 Route::get('/trendingads', [HomePageController::class, 'generalTrending']);
@@ -72,23 +109,23 @@ Route::get('/discount', [HomePageController::class, 'Discount']);
 // Route::get('/discount/{id}', [HomePageController::class, 'Discount']);
 
 // baby Link
-Route::get('/Kids_Baby_dresses',[HomePageController::class , 'baby']);
+Route::get('/Kids_Baby_dresses', [HomePageController::class, 'baby']);
 // Route::get('/Kids_Baby_dresses',[HomePageController::class , 'baby']);
 
 //property Api 
-Route::get('/property',[HomePageController::class , 'Property']);
+Route::get('/property', [HomePageController::class, 'Property']);
 // Route::get('/Kids_Baby_dresses',[HomePageController::class , 'baby']);
 
 // Luxury-apartment api 
-Route::get('/luxuryapartment',[HomePageController::class , 'Luxury_apartment']);
+Route::get('/luxuryapartment', [HomePageController::class, 'Luxury_apartment']);
 
-Route::get('/Vehicles_Upgrade',[HomePageController::class , 'Vehicles_Upgrade']);
+Route::get('/Vehicles_Upgrade', [HomePageController::class, 'Vehicles_Upgrade']);
 
 //Laptops data api 
-Route::get('/laptops',[HomePageController::class , 'Laptops']);
-  
+Route::get('/laptops', [HomePageController::class, 'Laptops']);
+
 //Cars data api 
-Route::get('/cars',[HomePageController::class , 'Cars']);
+Route::get('/cars', [HomePageController::class, 'Cars']);
 
 // Top videoes Ads 
 Route::get('/trendingadsvideos', [HomePageController::class, 'generalTopVideos']);
